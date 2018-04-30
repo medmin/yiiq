@@ -16,30 +16,32 @@ $fieldOptions = function($icon){
 };
 
 ?>
-<div class="container text-center">
-    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Sign Up QSchool</h1>
-    <?php $form = ActiveForm::begin(['id' => 'signup-form', 'enableClientValidation' => true]); ?>
-        
+<div class="container">
+    <div class="text-center">
+        <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Sign Up QSchool</h1>
+    </div>
+    <?php $form = ActiveForm::begin(['id' => 'signup-form']); ?>
+
         <?= $form
             ->field($model, 'username', $fieldOptions('user'))
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('username') ]) 
             ?>
         <?= $form
-            ->field($model, 'username', $fieldOptions('email'))
+            ->field($model, 'email', $fieldOptions('email'))
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('email') ]) 
             ?>
         <?= $form
-            ->field($model, 'username', $fieldOptions('password'))
+            ->field($model, 'password', $fieldOptions('password'))
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('password') ]) 
             ?>
         <?= $form
-            ->field($model, 'username', $fieldOptions('password2'))
+            ->field($model, 'password2', $fieldOptions('password'))
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('password2') ]) 
+            ->textInput(['placeholder' => $model->getAttributeLabel('password2') ])
             ?>
 
 
