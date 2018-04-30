@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use kartik\date\DatePicker;
 
 $this->title = 'Apply Now';
 $this->params['breadcrumbs'][] = $this->title;
@@ -14,61 +15,98 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->session->hasFlash('applyFormSubmitted')): ?>
 
-        <div class="alert alert-success">
-            Thank you for contacting us. We will respond to you as soon as possible.
+    <?php if (Yii::$app->session->hasFlash('ApplyFormSubmissionDbError')): ?>
+        <div class="alert alert-warning">
+            Thank you for applying. But it seems there is an error happened to our database. Please try again or email to us.
         </div>
-
-        <p>
-            Note that if you turn on the Yii debugger, you should be able
-            to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
-                Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
-                Please configure the <code>useFileTransport</code> property of the <code>mail</code>
-                application component to be false to enable email sending.
-            <?php endif; ?>
-        </p>
-
+    <?php elseif (Yii::$app->session->hasFlash('ApplyFormSubmissionLegalError')): ?>
+        <div class="alert alert-warning">
+            Thank you for applying. But it seems you have not agreed with the legal terms. Please try again and do check the checkbox. Thanks.
+        </div>
     <?php else: ?>
-
-        <p>
-            Apply now!
-        </p>
 
         <div class="row">
             <div class="col-lg-5">
 
                 <?php $form = ActiveForm::begin(['id' => 'apply-form']); ?>
 
-                    <?= $form->field($model, 'firstName')->textInput(['autofocus' => true]) ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'firstName')->textInput(['autofocus' => true]) ?>
+                        </div>
                     
-                    <?= $form->field($model, 'familyName') ?>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'familyName') ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'dob')->widget(DatePicker::classname(), []) ?> 
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'gender')
+                                    ->dropDownList(
+                                        [
+                                            'Male' => 'Male',
+                                            'Female' => 'Female',
+                                            'Other' => 'Other',
+                                        ],
+                                        ['prompt' => 'Choose a gender']
+                                    )
+                            
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                             <?= $form->field($model, 'email') ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'phone') ?>
+                        </div>
+                    </div>
                     
-                    <?= $form->field($model, 'country') ?>
-                    
-                    <?= $form->field($model, 'email') ?>
+                    <?= $form->field($model, 'homeAddress') ?>
+
+                    <?= $form->field($model, 'howDoYouFindUs')
+                            ->dropDownList(
+                                [
+                                    'Google' => 'Google',
+                                    'OtherSearchEngine' => 'Search Engine in my country',
+                                    'Agency' => 'Agency',
+                                    'Facebook'=>'Facebook',
+                                    'Instagram'=>'Instagram',
+                                    'OtherSocialMedia'=>'Other Social Media',
+                                    'Advertisement'=>'Advertisement',
+                                ],
+                                ['prompt' => 'How Do you find Us?']
+                            )
+                    ?>               
 
                     <?= $form->field($model, 'program')
                              ->dropDownList(
                                 [
-                                    '1'=>'Fundamental English',
-                                    '2'=>'Academic English',
-                                    '3' =>'Private Tutoring',
-                                    '4' => 'TOEFL / IELTS',
-                                    '5' => 'GRE, GMAT',
-                                    '6' => 'Business English'
+                                    'AcademicEnglish' => 'Academic English',
+                                    'BusinessEnglish' => 'Business English',
+                                    'FundamentalEnglish' => 'Fundamental English',
+                                    'GMAT'=>'GMAT',
+                                    'GRE'=>'GRE',
+                                    'IELTS'=>'IELTS',
+                                    'TOEFL'=>'TOEFL',
                                 ],
                                 ['prompt' => 'Choose a Program']
                             )
                     ?>
+                    <?= $form->field($model, 'howManyWeeks') ?> 
 
-                    <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
 
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
+
+                    <?= $form->field($model, 'legal')->checkbox(["he"=>"wordl"]) ?> 
 
                     <div class="form-group">
                         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

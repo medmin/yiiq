@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\Message;
 
 /**
  * ApplyForm is the model behind the apply form.
@@ -12,10 +13,17 @@ class ApplyForm extends Model
 {
     public $firstName;
     public $familyName;
-    public $country;
+    public $dob;
+    public $gender;
+    public $phone;
+    public $homeAddress;
+    public $citizenship;
+    public $howDoYouFindUs;
     public $email;
     public $program;
-    public $body;
+    public $message;
+    public $howManyWeeks;
+    public $legal;
     public $verifyCode;
 
 
@@ -24,11 +32,25 @@ class ApplyForm extends Model
      */
     public function rules()
     {
+        $requriedItems = [
+            'firstName', 
+            'familyName', 
+            'dob',
+            'gender',
+            'phone',
+            'homeAddress',
+            'citizenship', 
+            'howDoYouFindUs',
+            'howManyWeeks',
+            'email', 
+            'program', 
+            'message',
+            'legal'
+        ];
         return [
-            // fistname, familyname, email, program and body are required
-            [['fistName', 'familyName', 'country', 'email', 'program', 'body'], 'required'],
-            // email has to be a valid email address
+            [$requriedItems, 'required'],
             ['email', 'email'],
+            ['howManyWeeks', 'integer', 'min' => 1],
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
         ];
@@ -40,27 +62,43 @@ class ApplyForm extends Model
     public function attributeLabels()
     {
         return [
+            'dob' => 'Date of Birth',
+            'legal' => 'I agree with the Term of Use',
             'verifyCode' => 'Verification Code',
         ];
     }
 
     /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
-     * @return bool whether the model passes validation
+     * store apply info into mysql 
+     * table is message
      */
-    public function contact($email)
-    {
-        if ($this->validate()) {
-            Yii::$app->mailer->compose()
-                ->setTo($email)
-                ->setFrom([$this->email => $this->firstName . " " . $this->familyName])
-                ->setSubject($this->program)
-                ->setTextBody($this->body)
-                ->send();
+     public function apply()
+     {
+         if ($this->legal == 1)
+         {
 
-            return true;
-        }
-        return false;
-    }
+            $msgbody =  'Date of Birth: '. $this->dob . '\n' .
+                        'Gender: '. $this->gender . '\n' .
+                        'Phone Number: '. $this->phone . '\n' .
+                        'Home Address: '. $this->homeAddress . '\n' .
+                        'Citizenship: '. $this->citizenship . '\n' .
+                        'How Do You Find Us: '. $this->howDoYouFindUs . '\n' .
+                        'How many weeks: '. $this->howManyWeeks . '\n' .
+                        'Program: '. $this->program . '\n' .
+                        'Message: '. $this->message;
+
+
+            $msg = new Message();
+            $msg->type = 1 ; // 1 == apply; 2 == contact
+            $msg->email = $this->email;
+            $msg->name = $this->firstName . '-' . $this->familyName;
+            $msg->msgbody =$msgbody;
+            $msg->createdAt = time();
+            return $msg->save() ? 1 : 0;
+         }
+         else{
+            return -1;
+         }
+         
+     }
 }

@@ -11,6 +11,8 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\ApplyForm;
 use app\models\SignupForm;
+use app\models\PayForm;
+
 
 class SiteController extends Controller
 {
@@ -108,7 +110,10 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) 
+        {
+            //store the contact info into mysql
+
             Yii::$app->session->setFlash('contactFormSubmitted');
 
             return $this->refresh();
@@ -136,9 +141,23 @@ class SiteController extends Controller
     public function actionApply()
     {
         $model = new ApplyForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('ApplyFormSubmitted');
 
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if ($model->apply() == 1)
+            {
+                Yii::$app->session->setFlash('ApplyFormSubmissionSuccess');
+                return $this->redirect('/site/pay');
+            }
+            elseif ($model->apply() == 0)
+            {
+                Yii::$app->session->setFlash('ApplyFormSubmissionDbError');
+            }
+            elseif ($model->apply() == -1)
+            {
+                Yii::$app->session->setFlash('ApplyFormSubmissionLegalError');
+            }
+            
             return $this->refresh();
         }
         return $this->render('apply', [
@@ -153,7 +172,10 @@ class SiteController extends Controller
      */
     public function actionPay()
     {
-        return $this->render('pay');
+        $model = new PayForm();
+        return $this->render('pay',  [
+            'model' => $model,
+        ]);
     }
 
     public function actionSignup()
