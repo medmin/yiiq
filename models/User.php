@@ -19,7 +19,7 @@ use Yii;
  * @property string $createdAt 13 digital timestamp
  * @property string $updatedAt 13 digital timestamp
  */
-class User extends \yii\db\ActiveRecord implements yii\web\IdentityInterface
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const ROLE = [
         "BOSS" => 1,
@@ -44,13 +44,11 @@ class User extends \yii\db\ActiveRecord implements yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email', 'contact', 'password', 'authKey', 'accessToken', 'createdAt', 'updatedAt'], 'required'],
+            [['username', 'email', 'password', 'createdAt', 'updatedAt'], 'required'],
             [['contact'], 'string'],
             [['role','createdAt', 'updatedAt'], 'integer'],
             [['username'], 'string', 'max' => 40],
             [['email'], 'string', 'max' => 100],
-            [['password', 'authKey', 'accessToken'], 'string', 'max' => 200],
-            [['eiv'], 'string', 'max' => 1],
             [['username', 'email'], 'unique', 'targetAttribute' => ['username', 'email']],
         ];
     }
