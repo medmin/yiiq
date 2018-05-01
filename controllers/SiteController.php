@@ -110,14 +110,21 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) 
-        {
-            //store the contact info into mysql
 
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        if ($model->load(Yii::$app->request->post()))
+        {
+            if ($model->contact() == 1)
+            {
+                Yii::$app->session->setFlash('ContactFormSubmissionSuccess');
+            }
+            else
+            {
+                Yii::$app->session->setFlash('ContactFormSubmissionError');
+            }
 
             return $this->refresh();
         }
+
         return $this->render('contact', [
             'model' => $model,
         ]);
@@ -180,14 +187,13 @@ class SiteController extends Controller
 
     public function actionSignup()
     {
-        //$this->layout = 'main-login'; //这个是用adminlte的时候，用的一个登录页面
+        //这里要跳转，如果已经登录，就根据ROLE来跳转
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $user = $model->signup()) {
             if (Yii::$app->getUser()->login($user)) {
                 return $this->goHome();
             }
         }
-
         return $this->render('signup', [
             'model' => $model,
         ]);

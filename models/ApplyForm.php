@@ -77,14 +77,14 @@ class ApplyForm extends Model
          if ($this->legal == 1)
          {
 
-            $msgbody =  'Date of Birth: '. $this->dob . '\n' .
-                        'Gender: '. $this->gender . '\n' .
-                        'Phone Number: '. $this->phone . '\n' .
-                        'Home Address: '. $this->homeAddress . '\n' .
-                        'Citizenship: '. $this->citizenship . '\n' .
-                        'How Do You Find Us: '. $this->howDoYouFindUs . '\n' .
-                        'How many weeks: '. $this->howManyWeeks . '\n' .
-                        'Program: '. $this->program . '\n' .
+            $msgbody =  'Date of Birth: '. $this->dob . '<br />' .
+                        'Gender: '. $this->gender . '<br />' .
+                        'Phone Number: '. $this->phone . '<br />' .
+                        'Home Address: '. $this->homeAddress . '<br />' .
+                        'Citizenship: '. $this->citizenship . '<br />' .
+                        'How Do You Find Us: '. $this->howDoYouFindUs . '<br />' .
+                        'How many weeks: '. $this->howManyWeeks . '<br />' .
+                        'Program: '. $this->program . '<br />' .
                         'Message: '. $this->message;
 
 

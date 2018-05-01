@@ -18,7 +18,7 @@ class SignupForm extends Model
     public $password2;
     public $contact = '';
     public $eiv = false;
-    public $role = 'DEMO';
+    public $role;
 
     /**
      * @inheritdoc
@@ -27,7 +27,7 @@ class SignupForm extends Model
     {
         return [
             [['username', 'email'], 'trim'],
-            [['username', 'email', 'password', 'password2'], 'required'],
+            [['username', 'email', 'password', 'password2', 'role'], 'required'],
             ['password2', 'compare', 'compareAttribute'=>'password', 'message' => Yii::t('app','The two passwords differ')],
             ['username', 'unique', 'targetAttribute' => 'username', 'targetClass' => '\app\models\User', 'message' => Yii::t('app','This username has already been taken')],
             ['username', 'string', 'min' => 2, 'max' => 16],
@@ -44,7 +44,8 @@ class SignupForm extends Model
             'username' => Yii::t('app', 'Username'),
             'email' => Yii::t('app', 'Email'),
             'password' => Yii::t('app', 'Password'),
-            'password2' => Yii::t('app', 'Repeat Password'),
+            'password2' => Yii::t('app', 'Repeat Password Please'),
+            'role' => Yii::t('app', 'Who Am I?'),
         ];
     }
 
@@ -70,11 +71,11 @@ class SignupForm extends Model
         $user->createdAt =  round(microtime(true) * 1000);
         $user->updatedAt = $user->createdAt;
         $user->generateAuthKey();
-if ($user->save()) {
-    return $user;
-} else {
-    print_r($user->errors);exit;
-}
+        if ($user->save()) {
+            return $user;
+        } else {
+            print_r($user->errors);exit;
+        }
         return $user->save() ? $user : null;
     }
 }

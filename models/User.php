@@ -26,7 +26,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         "MANAGER" => 2,
         "STAFF" => 3,
         "PARENT" =>  4,
-        "CLIENT" => 5,
+        "STUDENT" => 5,
         "DEMO" => 99
     ];
 

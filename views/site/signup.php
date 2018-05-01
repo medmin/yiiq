@@ -16,7 +16,7 @@ $fieldOptions = function($icon){
 };
 
 ?>
-<div class="container">
+<div class="site-signup">
     <div class="text-center">
         <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Sign Up QSchool</h1>
@@ -42,6 +42,17 @@ $fieldOptions = function($icon){
             ->field($model, 'password2', $fieldOptions('password'))
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('password2') ])
+            ?>
+        <?= $form
+            ->field($model, 'role')
+            ->label(false)
+            ->dropdownlist(
+                [
+                    "PARENT" =>  "PARENT",
+                    "STUDENT" => "STUDENT"                    
+                ],
+                ['prompt' => 'Who Am I?']
+            )
             ?>
 
 

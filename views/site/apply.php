@@ -12,8 +12,8 @@ use kartik\date\DatePicker;
 $this->title = 'Apply Now';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="site-apply">
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
 
     <?php if (Yii::$app->session->hasFlash('ApplyFormSubmissionDbError')): ?>
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                     <?= $form->field($model, 'howManyWeeks') ?> 
 
-                    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'message')->textarea(['rows' => 3]) ?>
 
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',

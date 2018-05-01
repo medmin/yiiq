@@ -32,7 +32,7 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-pills navbar-fixed-top',
         ],
     ]);
     echo Nav::widget([
@@ -42,18 +42,29 @@ AppAsset::register($this);
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             ['label' => 'Apply', 'url' => ['/site/apply']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            [
+                'label' => 'User',
+                'items' => [
+                    Yii::$app->user->isGuest ? (
+                        ['label' => 'Login', 'url' => ['/site/login']]
+                    ) : (
+                        '<li>'
+                        . Html::beginForm(['/site/logout'], 'post')
+                        . Html::submitButton(
+                            'Logout (' . Yii::$app->user->identity->username . ')',
+                            ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>'
+                        ),
+                    ['label' => 'Sign Up', 'url' => '/site/signup','visible' => Yii::$app->user->isGuest],
+                    !Yii::$app->user->isGuest ?  (
+                        Yii::$app->user->identity->role <=2 && Yii::$app->user->identity->eiv == 1 ?
+                        (['label' => 'Admin Dashboard', 'url' => ['/admin/index']]) : 
+                        (['label' => 'My Dashboard', 'url' => ['/my/iddex']])
+                    ) :  ("")
+                ],
+            ],
         ],
     ]);
     NavBar::end();
@@ -72,9 +83,9 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; <a href="/about">QSchool.edu</a> All Rights Reverved <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= \Yii::t('yii', 'Powered by {yii}', [
-                'yii' => '<a href="http://www.yiiframework.com/" rel="external">' . \Yii::t('yii',
-                        'Yii Framework') . '</a>',
+        <p class="pull-right"><?= \Yii::t('yii', 'Powered by {medmin}', [
+                'medmin' => '<a href="http://www.github.com/medmin" rel="external">' . \Yii::t('yii',
+                        'medmin') . '</a>',
             ]); ?></p>
     </div>
 </footer>

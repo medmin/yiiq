@@ -5,45 +5,55 @@
 $this->title = 'QSchool';
 ?>
 <div class="site-index">
-
+    <!-- <div class="container">
+        <div class="row">
+            <p class="col-md-6"><a class="btn btn-block btn-success" href="/site/contact">Ask Me Anything</a></p>
+            <p class="col-md-6"><a class="btn btn-block btn-success" href="/site/apply">Apply Now</a></p>
+        </div>
+    </div> -->
     <div class="jumbotron">
-        <h1>Welcome!</h1>
+        <h1>Welcome to QSchool!</h1>
         <p class="lead">You have made a smart decision to choose QSchool!</p>
-        <p><a class="btn btn-lg btn-success" href="/site/apply">Apply Now</a></p>
+        <div class="row">
+            <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/contact">Ask Me Anything</a></p>
+            <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/about">Explore QSchool</a></p>
+            <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/apply">Apply Now</a></p>
+        </div>
+        
     </div>
 
     <div class="body-content">
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>QSchool</h2>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                     ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
                     fugiat nulla pariatur.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <p><a class="btn btn-default" href="http://www.qschool.edu/">Learn More &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>QSchool</h2>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                     ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
                     fugiat nulla pariatur.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p><a class="btn btn-default" href="http://www.qschool.edu/">Learn More &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>QSchool</h2>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                     ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
                     fugiat nulla pariatur.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p><a class="btn btn-default" href="http://www.qschool.edu/">Learn More &raquo;</a></p>
             </div>
         </div>
 
