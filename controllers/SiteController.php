@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\ApplyForm;
 use app\models\SignupForm;
 use app\models\PayForm;
+use app\models\Order;
 
 
 class SiteController extends Controller
@@ -151,11 +152,42 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post())) 
         {
+
             if ($model->apply() == 1)
             {
-                Yii::$app->session->setFlash('ApplyFormSubmissionSuccess');
-                return $this->redirect('/site/pay');
+                $session = Yii::$app->session;
+                $session->setFlash('ApplyFormSubmissionSuccess');
+                $ApplyMsg = $session->get('ApplyMsg');
+                $orderId = "Q". date("Ymd") . crypt($ApplyMsg['Email'], Yii::$app->params['PayHashSalt']) . substr(microtime(), 0, 5) * 1000 ;
+                $orderIdSessionMsg = "Please write down the <strong>order-id: " . $orderId ."</strong>. It's very important.";
+                $orderIdSessionMsg .= '<br />And the price of the program you have chosen is ' . $ApplyMsg['Price'];
+                /** store details into mysql 
+                 * table is order
+                */
+                $orderModel = new Order();
+                $orderModel->orderid = $orderId;
+                $orderModel->name = $ApplyMsg['FirstName'] .'-'. $ApplyMsg['FamilyName'] ;
+                $orderModel->email = $ApplyMsg['Email'];
+                $orderModel->detail = implode("<br />", $ApplyMsg);
+                $orderModel->price = $ApplyMsg['Price'];
+                $orderModel->createdAt = substr(microtime(), 0, 5) * 1000 + substr(microtime(), 11, 10) * 1000;
+                
+                if ( $orderModel->save())
+                {
+                    $session['orderId'] = [
+                        'msg' => $orderIdSessionMsg,
+                        'id' => $orderId,
+                        'detail' => $ApplyMsg,
+                    ];
+                    return $this->redirect('/site/pay');
+                }
+                else
+                {
+                    Yii::$app->session->setFlash('ApplyFormSubmissionDbError');
+                }
+                
             }
+
             elseif ($model->apply() == 0)
             {
                 Yii::$app->session->setFlash('ApplyFormSubmissionDbError');
@@ -164,6 +196,7 @@ class SiteController extends Controller
             {
                 Yii::$app->session->setFlash('ApplyFormSubmissionLegalError');
             }
+            
             
             return $this->refresh();
         }

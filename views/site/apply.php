@@ -42,7 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'dob')->widget(DatePicker::classname(), []) ?> 
+                            <?= $form->field($model, 'dob')
+                                ->widget(DatePicker::classname(), [
+                                    'options' => ['placeholder' => 'Year-Month-Day'],
+                                    'pluginOptions' => [
+                                        'format' => 'yyyy-mm-dd'
+                                        ]
+                                    ]) 
+                            ?> 
                         </div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'gender')
@@ -50,7 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         [
                                             'Male' => 'Male',
                                             'Female' => 'Female',
-                                            'Other' => 'Other',
                                         ],
                                         ['prompt' => 'Choose a gender']
                                     )
@@ -63,12 +69,19 @@ $this->params['breadcrumbs'][] = $this->title;
                              <?= $form->field($model, 'email') ?>
                         </div>
                         <div class="col-md-6">
-                            <?= $form->field($model, 'phone') ?>
+                            <?= $form->field($model, 'email2') ?>
                         </div>
                     </div>
-                    
-                    <?= $form->field($model, 'homeAddress') ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <?= $form->field($model, 'phone') ?>
+                        </div>
+                        <div class="col-md-6">
+                        <?= $form->field($model, 'citizenship') ?>
+                        </div>
+                    </div>
 
+                    <?= $form->field($model, 'homeAddress') ?>
                     <?= $form->field($model, 'howDoYouFindUs')
                             ->dropDownList(
                                 [
@@ -106,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 
-                    <?= $form->field($model, 'legal')->checkbox(["he"=>"wordl"]) ?> 
+                    <?= $form->field($model, 'legal')->checkbox(["id"=>"apply-legal-checkbox"]) ?> 
 
                     <div class="form-group">
                         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

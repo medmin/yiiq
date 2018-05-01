@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use yii\bootstrap\Alert;
 
 $this->title = 'Pay';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,8 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if (Yii::$app->session->hasFlash('ApplyFormSubmissionSuccess')): ?>
         <div class="alert alert-success">
-            Thank you for applying. Please continue to the following payment process.
+            Thank you for applying. Please finish the following payment process in 60 minutes.
         </div>
+        <?= Alert::widget([
+            'options' => ['class' => 'alert-info'],
+            'body' => Yii::$app->session->get('orderId')['msg'],
+            ]); ?>
+        
 
     <?php elseif (Yii::$app->session->hasFlash('PayFormSubmissionSuccess')): ?>
         <div class="alert alert-success">

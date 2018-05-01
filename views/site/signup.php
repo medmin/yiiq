@@ -38,12 +38,12 @@ $fieldOptions = function($icon){
             <?= $form
                 ->field($model, 'password', $fieldOptions('asterisk'))
                 ->label(false)
-                ->textInput(['placeholder' => $model->getAttributeLabel('password') ])
+                ->passwordInput(['placeholder' => $model->getAttributeLabel('password') ])
             ?>
             <?= $form
                 ->field($model, 'password2', $fieldOptions('asterisk'))
                 ->label(false)
-                ->textInput(['placeholder' => $model->getAttributeLabel('password2') ])
+                ->passwordInput(['placeholder' => $model->getAttributeLabel('password2') ])
             ?>
             <?= $form
                 ->field($model, 'role')

@@ -18,7 +18,8 @@ class AdminController extends Controller
             return false;
         }
         
-        if (Yii::$app->user->identity->role <= 2) {
+        if (Yii::$app->user->identity->role <= 2 && Yii::$app->user->identity->eiv == 1) 
+        {
             return true;
         }
         

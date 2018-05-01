@@ -59,7 +59,7 @@ AppAsset::register($this);
                         ),
                     ['label' => 'Sign Up', 'url' => ['/site/signup'],'visible' => Yii::$app->user->isGuest],
                     !Yii::$app->user->isGuest ?  (
-                        Yii::$app->user->identity->role <=2 && Yii::$app->user->identity->eiv == 1 ?
+                        Yii::$app->user->identity->role <=2  ?
                         (['label' => 'Admin Dashboard', 'url' => ['/admin/index']]) : 
                         (['label' => 'My Dashboard', 'url' => ['/my/iddex']])
                     ) :  ("")
