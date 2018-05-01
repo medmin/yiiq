@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -19,7 +21,7 @@ use Yii;
  * @property string $createdAt 13 digital timestamp
  * @property string $updatedAt 13 digital timestamp
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     const ROLE = [
         "BOSS" => 1,
@@ -44,9 +46,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email', 'password', 'createdAt', 'updatedAt'], 'required'],
+            [['username', 'email', 'password'], 'required'],
             [['contact'], 'string'],
-            [['role','createdAt', 'updatedAt'], 'integer'],
+            ['role', 'in', 'range' => [self::ROLE['PARENT'],self::ROLE['STUDENT']]], // 这个地方限制一下可注册的权限，可以使用scenarios
             [['username'], 'string', 'max' => 40],
             [['email'], 'string', 'max' => 100],
             [['username', 'email'], 'unique', 'targetAttribute' => ['username', 'email']],
@@ -70,6 +72,22 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'accessToken' => Yii::t('app', 'Access Token'),
             'createdAt' => Yii::t('app', 'Created At'),
             'updatedAt' => Yii::t('app', 'Updated At'),
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createdAt', 'updatedAt'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updatedAt'
+                ],
+                'value' => function ($e) {
+                    return round(microtime(true) * 1000);
+                }
+            ]
         ];
     }
 

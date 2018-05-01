@@ -68,8 +68,6 @@ class SignupForm extends Model
         $user->contact = $this->contact;
         $user->eiv = $this->eiv;
         $user->role = User::ROLE[$this->role];
-        $user->createdAt =  round(microtime(true) * 1000);
-        $user->updatedAt = $user->createdAt;
         $user->generateAuthKey();
         if ($user->save()) {
             return $user;

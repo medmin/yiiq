@@ -39,3 +39,6 @@ tests/_support/_generated
 # ignore index and index-test
 web/index-test.php
 web/index.php
+
+# ignore db-local
+config/db-local.php

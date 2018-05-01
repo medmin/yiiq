@@ -57,7 +57,7 @@ AppAsset::register($this);
                         . Html::endForm()
                         . '</li>'
                         ),
-                    ['label' => 'Sign Up', 'url' => '/site/signup','visible' => Yii::$app->user->isGuest],
+                    ['label' => 'Sign Up', 'url' => ['/site/signup'],'visible' => Yii::$app->user->isGuest],
                     !Yii::$app->user->isGuest ?  (
                         Yii::$app->user->identity->role <=2 && Yii::$app->user->identity->eiv == 1 ?
                         (['label' => 'Admin Dashboard', 'url' => ['/admin/index']]) : 
