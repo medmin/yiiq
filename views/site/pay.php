@@ -33,19 +33,32 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="alert alert-warning">
             Thank you, but it seems there is an error. Please try again. Thanks.
         </div>
-    <?php else: ?>
+        <?php endif; ?>
 
         <div class="row">
             <div class="col-lg-5">
 
                 <?php $form = ActiveForm::begin(['id' => 'pay-form']); ?>
 
-                   
+                   <?= $form->field($model, 'method')->dropdownlist(
+                       [
+                           'paypal' => 'PayPal',
+                           'cc' => 'Credit Card',
+                           'debitcard' => 'Debit Card'
+                       ],
+                       [
+                           'prompt' => 'Please select a payment method',
+                           'options' =>[ 'paypal' => ['Selected'=>'selected']]
+                       ]
+                
+                   ) ?>
+
+                   <?= $form->field($model, 'service')->checkbox() ?>
 
                 <?php ActiveForm::end(); ?>
 
             </div>
         </div>
 
-    <?php endif; ?>
+    
 </div>

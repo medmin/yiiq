@@ -7,14 +7,16 @@ use Yii;
 /**
  * This is the model class for table "order".
  *
- * @property int $id
+ * @property string $id
  * @property string $orderid
  * @property string $name
  * @property string $email
  * @property string $detail
  * @property string $service
- * @property int $price
+ * @property string $price
  * @property string $createdAt
+ * @property int $status
+ * @property string $paidAt
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -34,9 +36,10 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['orderid', 'name', 'email', 'detail', 'price', 'createdAt'], 'required'],
             [['detail'], 'string'],
-            [['price', 'createdAt'], 'integer'],
+            [['price', 'createdAt', 'paidAt'], 'integer'],
             [['orderid'], 'string', 'max' => 25],
             [['name', 'email', 'service'], 'string', 'max' => 100],
+            [['status'], 'string', 'max' => 2],
         ];
     }
 
@@ -54,6 +57,8 @@ class Order extends \yii\db\ActiveRecord
             'service' => Yii::t('app', 'Service'),
             'price' => Yii::t('app', 'Price'),
             'createdAt' => Yii::t('app', 'Created At'),
+            'status' => Yii::t('app', 'Status'),
+            'paidAt' => Yii::t('app', 'Paid At'),
         ];
     }
 }

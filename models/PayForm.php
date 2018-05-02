@@ -13,6 +13,7 @@ class PayForm extends Model
 {
     public $method;
     public $service;
+    public $finalPrice = 0;
     public $verifyCode;
 
 
@@ -38,7 +39,7 @@ class PayForm extends Model
     {
         return [
             'method' => "Please Select A Payment Method: ",
-            'service' => "Nobody picks you up? We can accommdate you! ",
+            'service' => "Nobody picks you up from the airport? We can help you! ",
             'verifyCode' => 'Verification Code',
         ];
     }

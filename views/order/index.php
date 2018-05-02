@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'service',
             //'price',
             //'createdAt',
+            //'status',
+            //'paidAt',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

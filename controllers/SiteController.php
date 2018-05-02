@@ -70,6 +70,23 @@ class SiteController extends Controller
     }
 
     /**
+     * sign up 
+     */
+    public function actionSignup()
+    {
+        //这里要跳转，如果已经登录，就根据ROLE来跳转
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $user = $model->signup()) {
+            if (Yii::$app->getUser()->login($user)) {
+                return $this->goHome();
+            }
+        }
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Login action.
      *
      * @return Response|string
@@ -218,19 +235,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSignup()
-    {
-        //这里要跳转，如果已经登录，就根据ROLE来跳转
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $user = $model->signup()) {
-            if (Yii::$app->getUser()->login($user)) {
-                return $this->goHome();
-            }
-        }
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+    
 
 
 }

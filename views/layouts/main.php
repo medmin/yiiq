@@ -61,7 +61,7 @@ AppAsset::register($this);
                     !Yii::$app->user->isGuest ?  (
                         Yii::$app->user->identity->role <=2  ?
                         (['label' => 'Admin Dashboard', 'url' => ['/admin/index']]) : 
-                        (['label' => 'My Dashboard', 'url' => ['/my/iddex']])
+                        (['label' => 'My Dashboard', 'url' => ['/my/index']])
                     ) :  ("")
                 ],
             ],

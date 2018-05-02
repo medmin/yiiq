@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'QSchool';
+$this->title = 'Q International School';
 ?>
 <div class="site-index">
     <!-- <div class="container">
@@ -12,7 +12,7 @@ $this->title = 'QSchool';
         </div>
     </div> -->
     <div class="jumbotron">
-        <h1>Welcome to QSchool!</h1>
+        <h1>Welcome to Q International School!</h1>
         <p class="lead">You have made a smart decision to choose QSchool!</p>
         <div class="row">
             <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/contact">Ask Me Anything</a></p>

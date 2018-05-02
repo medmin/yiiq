@@ -8,9 +8,22 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use kartik\date\DatePicker;
+use kartik\typeahead\Typeahead;
+
 
 $this->title = 'Apply Now';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerJs("
+$('#applyform-email2').on('focusout', function(){
+    var r = $('#applyform-email').val() === $(this).val() ? true : false;
+    if (!r)
+    {
+        alert('Please confirm your email!');
+    }
+});
+
+");
 ?>
 <div class="site-apply">
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
@@ -77,7 +90,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'phone') ?>
                         </div>
                         <div class="col-md-6">
-                        <?= $form->field($model, 'citizenship') ?>
+                        <?= $form->field($model, 'citizenship')
+                            ->widget(Typeahead::classname(), 
+                            [
+                                'dataset' => [
+                                    [
+                                        'local' => Yii::$app->params['countries'],
+                                        'limit' => 5
+                                    ]
+                                ],
+                                'pluginOptions' => ['highlight' => true],
+                                'options' => ['placeholder' => 'Please input your country'],
+                            ])
+                        ?>
                         </div>
                     </div>
 
@@ -119,10 +144,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 
-                    <?= $form->field($model, 'legal')->checkbox(["id"=>"apply-legal-checkbox"]) ?> 
+                    <?= $form->field($model, 'legal')->checkbox(["id"=>"apply-legal-checkbox", 'onchange' => "document.getElementById('signupSubmitBtn').disabled = !this.checked "]) ?> 
 
                     <div class="form-group">
-                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button', 'id'=> 'signupSubmitBtn', 'disabled' => true]) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>
