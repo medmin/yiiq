@@ -23,6 +23,10 @@ $('#applyform-email2').on('focusout', function(){
     }
 });
 
+$('#apply-legal-checkbox').on('change', function(){
+    $('#signupSubmitBtn').attr('disabled', !this.checked );
+});
+
 ");
 ?>
 <div class="site-apply">
@@ -144,7 +148,7 @@ $('#applyform-email2').on('focusout', function(){
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 
-                    <?= $form->field($model, 'legal')->checkbox(["id"=>"apply-legal-checkbox", 'onchange' => "document.getElementById('signupSubmitBtn').disabled = !this.checked "]) ?> 
+                    <?= $form->field($model, 'legal')->checkbox(["id"=>"apply-legal-checkbox" ]) ?> 
 
                     <div class="form-group">
                         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button', 'id'=> 'signupSubmitBtn', 'disabled' => true]) ?>
