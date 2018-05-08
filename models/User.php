@@ -169,4 +169,9 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->authKey === $authKey;
     }
 
+    public static function findByLogin($login)
+    {
+         return filter_var($login, FILTER_VALIDATE_EMAIL) ? User::findByEmail($login) : User::findByUsername($login);
+    }
+
 }

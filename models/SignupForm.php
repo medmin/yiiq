@@ -30,7 +30,7 @@ class SignupForm extends Model
             [['username', 'email', 'password', 'password2', 'role'], 'required'],
             ['password2', 'compare', 'compareAttribute'=>'password', 'message' => Yii::t('app','The two passwords differ')],
             ['username', 'unique', 'targetAttribute' => 'username', 'targetClass' => '\app\models\User', 'message' => Yii::t('app','This username has already been taken')],
-            ['username', 'string', 'min' => 2, 'max' => 16],
+            ['username', 'string', 'min' => 6, 'max' => 16],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetAttribute' => 'email', 'targetClass' => '\app\models\User', 'message' => Yii::t('app','This email has already been taken')],

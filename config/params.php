@@ -3,6 +3,14 @@
 return [
     'adminEmail' => 'technology@ieducationm.com',
     "PayHashSalt" => "helloworld",
+    'PromoCode' => [
+        'No' => true,
+        'NO' => true,
+        'no' => true,
+        'nO' => true,
+       'SAVE47' => ['METHOD' => true, 'RATE' => 0.53 ], // true == *, false == -
+
+    ],
     "countries" => array(
         'Afghanistan',
         'Albania',

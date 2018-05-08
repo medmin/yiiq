@@ -34,9 +34,10 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['orderid', 'name', 'email', 'detail', 'price', 'createdAt'], 'required'],
+            [['orderid', 'name', 'email', 'detail', 'price','createdAt'], 'required'],
             [['detail'], 'string'],
-            [['price', 'createdAt', 'paidAt'], 'integer'],
+            [['price','createdAt', 'paidAt'], 'integer'],
+            ['price', 'integer', 'min'=> 1],
             [['orderid'], 'string', 'max' => 25],
             [['name', 'email', 'service'], 'string', 'max' => 100],
             [['status'], 'string', 'max' => 2],

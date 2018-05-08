@@ -17,7 +17,6 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "bower-asset/bulma": "^0.7.1",
-        "paypal/rest-api-sdk-php": "*",
         "kartik-v/yii2-widget-typeahead": "*"
     },
     "require-dev": {

@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use app\models\Message;
+use app\models\Order;
 
 /**
  * ApplyForm is the model behind the apply form.
@@ -12,18 +13,25 @@ use app\models\Message;
 class ApplyForm extends Model
 {
     public $firstName;
-    public $familyName;
+    public $lastName;
     public $dob;
     public $gender;
     public $phone;
     public $homeAddress;
     public $citizenship;
-    public $howDoYouFindUs;
+    public $HowDidYouHearAboutUs;
+    public $AgencyName;
     public $email;
     public $email2;
-    public $program;
     public $message;
-    public $howManyWeeks;
+    public $WhichProgram;// ae, be, fe, test prep
+    public $Weeks; 
+    public $HoursForPL; // Private Lesson
+    public $ApplicationFee;
+    public $MaterialsFee;
+    public $PromoCode;
+    public $StudentVisa;
+    public $finalPrice;
     public $legal;
     public $verifyCode;
 
@@ -35,24 +43,32 @@ class ApplyForm extends Model
     {
         $requriedItems = [
             'firstName', 
-            'familyName', 
+            'lastName', 
             'dob',
             'gender',
             'phone',
             'homeAddress',
             'citizenship', 
-            'howDoYouFindUs',
-            'howManyWeeks',
+            'HowDidYouHearAboutUs',
             'email', 
             'email2',
-            'program', 
+            'WhichProgram', 
+            'Weeks',
             'message',
-            'legal'
+            'legal',
+            'ApplicationFee',
+            'StudentVisa',
+            'housingApplicationFee',
         ];
         return [
             [$requriedItems, 'required'],
+            ['HoursForPL', 'required', 'message' =>'Please input how many hours for the private lessons you purchase. You can type 0 if you don\'t need it.'],
+            ['PromoCode', 'required', 'message' => 'Type "No" if you don\'t have one.'],
+            [['email'], 'trim'],
             ['email', 'email'],
-            ['howManyWeeks', 'integer', 'min' => 1],
+            ['email2', 'compare', 'compareAttribute' => 'email', 'message' => 'Attention! The emails are not the same.'],
+            ['Weeks','integer','min' => 1],
+            ['legal', 'compare', 'compareValue' => 1, 'operator' => '==', 'message' => 'You need to agree with our Terms of Use and Privacy Policy.'],
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
         ];
@@ -64,71 +80,94 @@ class ApplyForm extends Model
     public function attributeLabels()
     {
         return [
-            'dob' => 'Date of Birth',
+            'dob' => 'Date of Birth (You can type it)',
+            'HowDidYouHearAboutUs'=> 'How did you hear about us?',
             'email2' => "Confirm your Email please",
-            'legal' => 'I agree with the Term of Use',
+            'legal' => 'I have read and agree with the Term of Use (Click the link below the button)',
+            'ApplicationFee' => 'Application Fee (US dollars)',
+            'StudentVisa' => 'Do you need a Student Visa?',
             'verifyCode' => 'Verification Code',
         ];
     }
 
-    /**
-     * store apply info into mysql 
-     * table is message
-     */
-     public function apply()
-     {
-         if ($this->legal == 1)
-         {
+    public function apply()
+    {
+        $WeeksCategory = function($weeks){
+            if ($weeks >=1 && $weeks <=12){
+                return 'a';
+            }
+            else if ($weeks >=13 && $weeks <=24){
+                return 'b';
+            }
+            else if ($weeks >= 25){
+                return 'c';
+            }
+        };
+        $programPricingUnit = [
+            'AE' => ['a' => 510,'b'=>480,'c'=> 450, 'MF'=>115],
+            'BE' => ['a' => 325,'b'=>325,'c'=> 0, 'MF'=>50],
+            'FE' => ['a' => 260,'b'=>235,'c'=> 220, 'MF'=>115],
+            'TOEFL' => ['a' => 440,'b'=>420,'c'=> 400, 'MF'=>140],
+            'GRE' => ['a' => 440,'b'=>420,'c'=> 400, 'MF'=>70],
+            'GMAT' => ['a' => 440,'b'=>420,'c'=> 400, 'MF'=>80],
+            'IELTS' => ['a' => 440,'b'=>420,'c'=> 400, 'MF'=>140],
+        ];
 
-            $msgbody =  'Date Of Birth: '. $this->dob . '<br />' .
-                        'Gender: '. $this->gender . '<br />' .
-                        'Phone Number: '. $this->phone . '<br />' .
-                        'Home Address: '. $this->homeAddress . '<br />' .
-                        'Citizenship: '. $this->citizenship . '<br />' .
-                        'How Do You Find Us: '. $this->howDoYouFindUs . '<br />' .
-                        'How Many Weeks: '. $this->howManyWeeks . '<br />' .
-                        'Program: '. $this->program . '<br />' .
-                        'Message: '. $this->message;
+        $orderid = "Q". date("Ymd") . crypt($this->email, Yii::$app->params['PayHashSalt']) . substr(microtime(), 0, 5) * 1000 ;
+        
+        $finalPrice = (int)$programPricingUnit[$this->WhichProgram][$WeeksCategory($this->Weeks)] * $this->Weeks 
+                    + (int)$this->HoursForPL * 50 
+                    + (int)$this->ApplicationFee 
+                    + (int)$programPricingUnit[$this->WhichProgram]['MF'];
 
+        $detail =   'First Name: ' . $this->firstName . '<br />' .
+                    'Last Name: ' . $this->lastName . '<br />' .
+                    'Date of Birth: ' . $this->dob . '<br />' .
+                    'Gender: ' . $this->gender . '<br />' .
+                    'Phone: ' . $this->phone . '<br />' .
+                    'Home Address: ' . $this->homeAddress . '<br />' .
+                    'Citizenship: ' . $this->citizenship . '<br />' .
+                    'How Did You Hear About Us: ' . $this->HowDidYouHearAboutUs . '<br />' .
+                    'Agency Name: ' . ($this->AgencyName == '' ? 'None' : $this->AgencyName) . '<br />' .
+                    'Email: ' . $this->email . '<br />' .
+                    'Message: ' . $this->message . '<br />' .
+                    'Which Program: ' . $this->WhichProgram . '<br />' .
+                    'Weeks: ' . $this->Weeks . '<br />' .
+                    'Hours For Private Lessons: ' . $this->HoursForPL . '<br />' .
+                    'Application Fee: ' . $this->ApplicationFee . '<br />' .
+                    'Materials Fee: ' . $programPricingUnit[$this->WhichProgram]['MF'] . '<br />' .
+                    'Promo Code: ' . $this->PromoCode . '<br />' .
+                    'Student Visa: ' . $this->StudentVisa . '<br />' .
+                    'FinalPrice: ' . $finalPrice . ' US dollars';
+        
+        
 
-            $programPrices = [
-                'AcademicEnglish' => 100,
-                'BusinessEnglish' => 200,
-                'FundamentalEnglish' => 300,
-                'GMAT'=>400,
-                'GRE'=>500,
-                'IELTS'=>600,
-                'TOEFL'=>700,
-            ];
+        $order = new Order();
+        $order->orderid = $orderid;
+        $order->name = $this->firstName.'-'. $this->lastName ;
+        $order->email = $this->email;
+        $order->detail = $detail;
+        $order->price = (int)$finalPrice; 
+        $order->createdAt = substr(microtime(), 0, 5) * 1000 + substr(microtime(), 11, 10) * 1000;
+        if ($order->save() )
+        {
 
-            $msg = new Message();
-            $msg->type = 1 ; // 1 == apply; 2 == contact
-            $msg->email = $this->email;
-            $msg->name = $this->firstName . '-' . $this->familyName;
-            $msg->msgbody =$msgbody;
-            $msg->createdAt = time();
             $session = Yii::$app->session;
-            $session["ApplyMsg"] = [
-                "Type" => "apply",
-                "Email" => $this->email,
-                "FirstName" => $this->firstName,
-                "FamilyName" => $this->familyName,
-                "DateOfBirth" => $this->dob,
-                "Gender" => $this->gender,
-                "PhoneNumber" => $this->phone,
-                "HomeAddress" =>$this->homeAddress,
-                "Citizenship" => $this->citizenship,
-                "HowDoYouFindUs" => $this->howDoYouFindUs,
-                "HowManyWeeks"=> $this->howManyWeeks,
-                "Program" => $this->program,
-                "Message" => $this->message,
-                "Price" => $programPrices[$this->program]
+            $session['orderInfo'] = [
+                'msg' => 'Please write down the order id: ' . $order->orderid . ', which is very important!' ,
+                'id' =>  $order->orderid,
+                'detail' =>  $order->detail,
+                'program' => $this->WhichProgram,
+                'price' => (int)$finalPrice,
             ];
-            return $msg->save() ? 1 : 0;
-         }
-         else{
-            return -1;
-         }
-         
-     }
+            return true;
+        }
+        else{
+            // print_r($order->errors);exit;
+            Yii::$app->session->setFlash('ApplyFormSubmissionDbError');
+            return false;
+        }
+    }
+
+    
 }
