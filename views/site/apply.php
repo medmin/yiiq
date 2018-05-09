@@ -39,46 +39,47 @@ $('#applyform-legal').on('change', function(){
     $('#signupSubmitBtn').attr('disabled', !this.checked );
 });
 
-$('#applyform-weeks').on('change',function(){
-    var whichProgram = $('#applyform-whichprogram').val();
-    var wks = $(this).val();
-    var wksCategory = function(wks){
-        if (wks >=1 && wks <= 12){
-            return 'a';
-        }
-        else if (wks >=13 && wks <= 24){
-            return 'b';
-        }
-        else if (wks >=25){
-            return 'c';
-        }
-    };
-    var priceUnit = {
-        'AE' : {a:510,b:480,c:450, MF : 115},
-        'BE' : {a:325,b:325,c:0, MF:50},
-        'FE' : {a:260,b:235,c:220, MF : 115},
-        'TOEFL' : {a:440,b:420,c:400, MF : 140},
-        'GRE' : {a:440,b:420,c:400, MF : 70},
-        'GMAT' : {a:440,b:420,c:400, MF : 80},
-        'IELTS' : {a:440,b:420,c:400, MF : 140}
-    };
-    $('#programprice').text(priceUnit[whichProgram][wksCategory(wks)] * wks);
-    $('#applyform-materialsfee').val(priceUnit[whichProgram]['MF']);
-});
+var priceUnit = {
+    'AE' : {a:510,b:480,c:450, MF : 115},
+    'BE' : {a:325,b:325,c:0, MF:50},
+    'FE' : {a:260,b:235,c:220, MF : 115},
+    'TOEFL' : {a:440,b:420,c:400, MF : 140},
+    'GRE' : {a:440,b:420,c:400, MF : 70},
+    'GMAT' : {a:440,b:420,c:400, MF : 80},
+    'IELTS' : {a:440,b:420,c:400, MF : 140}
+};
 
-$('#applyform-hoursforpl').on('change',function(){
-    var PLhrs = $(this).val();
-    $('#PLprice').text(PLhrs * 50);
-});
+var wksCategory = function(wks){
+    if (wks >=1 && wks <= 12){
+        return 'a';
+    }
+    else if (wks >=13 && wks <= 24){
+        return 'b';
+    }
+    else if (wks >=25){
+        return 'c';
+    }
+};
 
-$('td').on('change',function(){
-    var TotalPrice = parseInt($('#programprice').text())
-                    + parseInt($('#PLprice').text())
-                    + parseInt($('#applyform-applicationfee').val())
-                    + parseInt($('#applyform-materialsfee').val()) ;
-    $('#applyform-finalprice').attr('value',TotalPrice);
-});
+$('td').on('change keyup focusout', function(){
+    var whichprogram = $('#applyform-whichprogram').val();
+    var weeks = $('#applyform-weeks').val();
+    var hrs = $('#applyform-hoursforpl').val();
+    var promocode = $('#applyform-promocode').val().toUpperCase();
 
+
+    var ProgramPrice =  priceUnit[whichprogram][wksCategory(weeks)] * weeks;
+    $('#programprice').text(ProgramPrice);
+
+    var PLprice = hrs * 50;
+    $('#PLprice').text(PLprice);
+
+    var MaterialFee = priceUnit[whichprogram]['MF'];
+    $('#applyform-materialsfee').attr('value', MaterialFee);
+
+    var finalprice = parseInt(ProgramPrice) + parseInt(PLprice) + 125 + parseInt(MaterialFee);
+    $('#applyform-finalprice').attr('value', finalprice);
+});
 
 ");
 ?>
@@ -242,7 +243,7 @@ $('td').on('change',function(){
                         <tr>
                             <td>Materials Fee</td>
                             <td><?= $form->field($model, 'MaterialsFee')->label(false)->textInput([
-                                    'value' => 115,
+                                    'value' => 0,
                                     'readOnly' => true
                                 ])?>
                             </td>

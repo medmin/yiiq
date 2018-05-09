@@ -17,7 +17,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "bower-asset/bulma": "^0.7.1",
-        "kartik-v/yii2-widget-typeahead": "*"
+        "kartik-v/yii2-widget-typeahead": "*",
+        "stripe/stripe-php": "^6.6"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

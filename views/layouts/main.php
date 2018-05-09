@@ -22,6 +22,7 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>

@@ -29,6 +29,59 @@ $('#payment-method-id').on('change', function(){
     }
 });
 
+var stripe = Stripe('pk_test_JZsQOO0P2qAeeMHWoYKjlufi');
+var elements = stripe.elements();
+var style = {
+    base: {
+      // Add your base input styles here. For example:
+      fontSize: '20px',
+      color: '#32325d',
+    }
+  };
+// Create an instance of the card Element.
+var card = elements.create('card', {style:style});
+
+// Add an instance of the card Element into the [cc-info-form] <div>.
+card.mount('#cc-info-form');
+
+card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Create a token or display an error when the form is submitted.
+var form = document.getElementById('pay-form');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  stripe.createToken(card).then(function(result) {
+    if (result.error) {
+      // Inform the customer that there was an error.
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server.
+      stripeTokenHandler(result.token);
+    }
+  });
+});
+
+function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('pay-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+  
+    // Submit the form
+    form.submit();
+  }
 
 ");
 
@@ -56,13 +109,19 @@ $('#payment-method-id').on('change', function(){
 
         <div class="row">
             <div class="col-md-6">
-                <?php $form = ActiveForm::begin(['action' =>['pay/stripecc'], 'id' => 'pay-form']); ?>
+                <?php $form = ActiveForm::begin(['action' =>['pay/stripe'], 'id' => 'pay-form']); ?>
                     <?= $form->field($model, 'orderId')->textInput( 
-                        ['readOnly' => true, 'value'=>Yii::$app->session->get('orderInfo')['id']]
+                        [
+                            // 'readOnly' => true, 
+                            'value'=>Yii::$app->session->get('orderInfo')['id']
+                        ]
                     ) ?>
 
                     <?= $form->field($model, 'ProgramPrice')->textInput( 
-                        ['readOnly' => true, 'value'=>Yii::$app->session->get('orderInfo')['price']]
+                        [
+                            // 'readOnly' => true, 
+                            'value'=>Yii::$app->session->get('orderInfo')['price']
+                        ]
                     ) ?>
                    <?= $form->field($model, 'PaymentMethod')->dropdownlist(
                        [
@@ -76,18 +135,12 @@ $('#payment-method-id').on('change', function(){
                    ) ?>
                                      
                            
-                <div id="cc-info-form" style="display:none">
-                    <?= $form->field($model, 'creditcardHoldersName')->textInput(['id'=>'cc-name']) ?>
-                    <?= $form->field($model, 'creditcardNumber')->textInput(['id'=>'cc-number']) ?>
-                    <div class="row">
-                        <div class="col-md-4"><?= $form->field($model, 'creditcardExpireMonth', ['inputOptions' =>['id'=>'cc-expire-mo']])->input('Number') ?></div>
-                        <div class="col-md-4"><?= $form->field($model, 'creditcardExpireYear', ['inputOptions' =>['id'=>'cc-expire-yr']])->input('Number') ?></div>
-                        <div class="col-md-4"><?= $form->field($model, 'creditcardCVV', ['inputOptions' => ['id'=>'cc-cvv']])->input('Number') ?></div>
-                    </div>
+                <div id="cc-info-form" style="display:none" class="pt-2">
                     
                 </div>
-
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                <!-- Used to display Element errors. -->
+                <div id="card-errors" role="alert" class="pt-1"></div>
+                <?= $form->field($model, 'verifyCode')->label(false)->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 

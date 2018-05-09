@@ -14,11 +14,6 @@ class PayForm extends Model
     public $orderId;
     public $ProgramPrice;
     public $PaymentMethod;
-    public $creditcardHoldersName;
-    public $creditcardNumber;
-    public $creditcardExpireMonth;
-    public $creditcardExpireYear;
-    public $creditcardCVV;
     public $verifyCode;
 
 
@@ -46,11 +41,6 @@ class PayForm extends Model
         return [
             'orderId' => 'Order ID',
             'PaymentMethod' => "Please Select the Payment Method: ",
-            'creditcardHoldersName' => 'Credit Card Holder\'s Name',
-            'creditcardNumber' => 'Credit Card Number',
-            'creditcardExpireMonth' => 'Month',
-            'creditcardExpireYear' => 'Year', 
-            'creditcardCVV' => 'CVV',
             'verifyCode' => 'Verification Code',
         ];
     }
