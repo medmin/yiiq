@@ -66,19 +66,22 @@ $('td').on('change keyup focusout', function(){
     var weeks = $('#applyform-weeks').val();
     var hrs = $('#applyform-hoursforpl').val();
     var promocode = $('#applyform-promocode').val().toUpperCase();
-
-
+    var NumInPromoCode = promocode.replace(/^[a-z]+/gi,'');
+    var off = NumInPromoCode === '' ? 0 : NumInPromoCode;
+    // console.log(off, typeof off);
     var ProgramPrice =  priceUnit[whichprogram][wksCategory(weeks)] * weeks;
+    ProgramPrice = parseInt(ProgramPrice) * (100- parseInt(off)) / 100;
     $('#programprice').text(ProgramPrice);
-
+   
     var PLprice = hrs * 50;
     $('#PLprice').text(PLprice);
 
     var MaterialFee = priceUnit[whichprogram]['MF'];
     $('#applyform-materialsfee').attr('value', MaterialFee);
-
-    var finalprice = parseInt(ProgramPrice) + parseInt(PLprice) + 125 + parseInt(MaterialFee);
+    
+    var finalprice = parseFloat(ProgramPrice) + parseInt(PLprice) + 125 + parseInt(MaterialFee);
     $('#applyform-finalprice').attr('value', finalprice);
+    
 });
 
 ");
