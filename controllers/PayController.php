@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\models\Order;
 
 
 class PayController extends Controller
@@ -13,9 +14,10 @@ class PayController extends Controller
 
         if (Yii::$app->request->post())
         {
-            
+                       
             \Stripe\Stripe::setApiKey("sk_test_4FgKScuvjgJyynMBZR1S8c72");
             $token = Yii::$app->request->post('stripeToken');
+            
             try
             {
                 \Stripe\Charge::create([
@@ -24,11 +26,15 @@ class PayController extends Controller
                     'description' => 'QSchool Language Program',
                     'source' => $token,
                 ]);
-                return $this->redirect('/');
+                $orderid = trim((string)(Yii::$app->request->post('PayForm')['orderId']));
+                $order = Order::findOne(['orderid' => $orderid]);
+                $order->status = 1;
+                $order->paidAt = substr(microtime(), 0, 5) * 1000 + substr(microtime(), 11, 10) * 1000;
+                return $order->save() ? $this->redirect('/') : $this->redirect('/pay/error');
             }
             catch (ErrorException $e)
             {
-                return $this->render('site/error');
+                return $this->redirect('/pay/error');
             }
             
         }

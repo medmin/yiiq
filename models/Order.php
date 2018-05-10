@@ -15,7 +15,7 @@ use Yii;
  * @property string $service
  * @property string $price
  * @property string $createdAt
- * @property int $status
+ * @property int $status // 0 == not paid, 1 == paid,
  * @property string $paidAt
  */
 class Order extends \yii\db\ActiveRecord
@@ -36,11 +36,10 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['orderid', 'name', 'email', 'detail', 'price','createdAt'], 'required'],
             [['detail'], 'string'],
-            [['price','createdAt', 'paidAt'], 'integer'],
+            [['price','status','createdAt', 'paidAt'], 'integer'],
             ['price', 'integer', 'min'=> 1],
             [['orderid'], 'string', 'max' => 25],
             [['name', 'email', 'service'], 'string', 'max' => 100],
-            [['status'], 'string', 'max' => 2],
         ];
     }
 

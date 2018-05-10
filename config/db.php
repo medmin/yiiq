@@ -5,7 +5,7 @@ return [
     'dsn' => 'mysql:host=localhost;dbname=qschool',
     'username' => 'root',
     'password' => 'root',
-    'charset' => 'utf8',
+    'charset' => 'utf8mb4',
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
