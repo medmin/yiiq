@@ -7,16 +7,16 @@ use Yii;
 /**
  * This is the model class for table "order".
  *
- * @property string $id
+ * @property int $id
  * @property string $orderid
  * @property string $name
  * @property string $email
  * @property string $detail
  * @property string $service
- * @property string $price
- * @property string $createdAt
+ * @property int $price
+ * @property int $createdAt
  * @property int $status // 0 == not paid, 1 == paid,
- * @property string $paidAt
+ * @property int $paidAt
  */
 class Order extends \yii\db\ActiveRecord
 {

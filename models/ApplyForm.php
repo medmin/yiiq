@@ -113,9 +113,13 @@ class ApplyForm extends Model
             'IELTS' => ['a' => 440,'b'=>420,'c'=> 400, 'MF'=>140],
         ];
 
+        $PromoCodeArr = Yii::$app->params['PromoCodeArr'];
+        $off = array_key_exists(strtoupper($this->PromoCode), $PromoCodeArr) ? $PromoCodeArr[strtoupper($this->PromoCode)] : 0;
+        $rate = round( ((100 - $off) / 100), 2);
+
         $orderid = "Q". date("Ymd") . crypt($this->email, Yii::$app->params['PayHashSalt']) . substr(microtime(), 0, 5) * 1000 ;
         
-        $finalPrice = (int)$programPricingUnit[$this->WhichProgram][$WeeksCategory($this->Weeks)] * $this->Weeks 
+        $finalPrice = $rate * (int)$programPricingUnit[$this->WhichProgram][$WeeksCategory($this->Weeks)] * $this->Weeks 
                     + (int)$this->HoursForPL * 50 
                     + (int)$this->ApplicationFee 
                     + (int)$programPricingUnit[$this->WhichProgram]['MF'];

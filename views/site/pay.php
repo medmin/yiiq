@@ -112,14 +112,14 @@ function stripeTokenHandler(token) {
                 <?php $form = ActiveForm::begin(['action' =>['pay/stripe'], 'id' => 'pay-form']); ?>
                     <?= $form->field($model, 'orderId')->textInput( 
                         [
-                            // 'readOnly' => true, 
+                            'readOnly' => true, 
                             'value'=>Yii::$app->session->get('orderInfo')['id']
                         ]
                     ) ?>
 
                     <?= $form->field($model, 'ProgramPrice')->textInput( 
                         [
-                            // 'readOnly' => true, 
+                            'readOnly' => true, 
                             'value'=>Yii::$app->session->get('orderInfo')['price']
                         ]
                     ) ?>

@@ -4,8 +4,8 @@ return [
     'adminEmail' => 'technology@ieducationm.com',
     "PayHashSalt" => "helloworld",
     'PromoCodeArr' => [
-        'NO' => ['METHOD' => true, 'RATE' => 1 ],
-        'ABC' => ['METHOD' => true, 'RATE' => 1 ], // true == *, false == -
+        'NO' => 0,
+        'ABC' => 0, // true == *, false == -
     ],
     "countries" => array(
         'Afghanistan',
