@@ -13,10 +13,60 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-admin">
     <div class="box box-primary">
-        <div class="box-header with-border"><p>Messages</p></div>
+        <div class="box-header with-border"><h2>Orders</h2></div>
+        <div class="box-body table-responsive">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider2,
+                'filterModel' => $orderSearchModel,
+                'columns' => [
+                    [
+                        'attribute' => 'orderid'
+                    ],
+                    [
+                        'attribute' => 'name'
+                    ],
+                    [
+                        'attribute' => 'email'
+                    ],
+                    [
+                        'attribute' => 'detail',
+                        'format' => 'raw'
+                    ],
+                    [
+                        'attribute' => 'createdAt',
+                        'value' => function($model){
+                            $createdAt = $model->createdAt;
+                            $dateForAdmin = date("d F Y H:i:s", round($createdAt/1000));
+                            return $dateForAdmin;
+                        }
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'value' => function($model){
+                            $status = $model->status;
+                            $map = [ 0 => 'Not Paid', 1 =>'Paid'];
+                            return $map[$status];
+                        }
+                    ],
+                    [
+                        'attribute' => 'paidAt',
+                        'value' => function($model){
+                            $paidAt = $model->paidAt;
+                            $dateForAdmin = date("d F Y H:i:s", round($paidAt/1000));
+                            return $paidAt == 0 ? 0 : $dateForAdmin;
+                        }
+                    ],
+                ]
+            ]) ?>
+        </div>
+    </div>
+    <hr />
+    <div class="box box-primary">
+        <div class="box-header with-border"><h2>Messages</h2></div>
         <div class="box-body table-responsive">
         <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'filterModel' => $messageSearchModel,
                     'columns' => [
                         [
                             'attribute' => 'id'

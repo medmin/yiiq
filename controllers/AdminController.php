@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Message;
 use app\models\MessageSearch;
+use app\models\Order;
+use app\models\OrderSearch;
 use app\models\User;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -32,9 +34,14 @@ class AdminController extends Controller
         $messageSearchModel = new MessageSearch();
         $dataProvider = $messageSearchModel->search(Yii::$app->request->queryParams);
 
+        $orderSearchModel = new OrderSearch();
+        $dataProvider2 = $orderSearchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index',[
             'messageSearchModel' => $messageSearchModel,
             'dataProvider' => $dataProvider,
+            'orderSearchModel' => $orderSearchModel,
+            'dataProvider2' => $dataProvider2,
         ]);
     }
 

@@ -13,7 +13,7 @@ $this->title = 'Q International School';
     </div> -->
     <div class="jumbotron">
         <h1>Welcome to Q International School!</h1>
-        <p class="lead">You have made a smart decision to choose QSchool!</p>
+        <p class="lead">You have made a smart decision to choose Q International School!</p>
         <div class="row">
             <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/contact">Ask Me Anything</a></p>
             <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/about">Explore QSchool</a></p>
