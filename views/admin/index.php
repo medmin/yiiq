@@ -23,10 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'orderid'
                     ],
                     [
-                        'attribute' => 'name'
+                        'attribute' => 'name',
+                        'value' => function($model){
+                            $nameArr = explode("-", $model->name);
+                            $name = $nameArr[0] .' '.$nameArr[1];
+                            return $name;
+                        }
                     ],
                     [
                         'attribute' => 'email'
+                    ],
+                    [
+                        'attribute' => 'price'
                     ],
                     [
                         'attribute' => 'detail',
@@ -80,7 +88,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         [
-                            'attribute' => 'name'
+                            'attribute' => 'name',
+                            'value' => function($model){
+                                $nameArr = explode("-", $model->name);
+                                $name = $nameArr[0] .' '.$nameArr[1];
+                                return $name;
+                            }
                         ],
                         [
                             'attribute' => 'email'
