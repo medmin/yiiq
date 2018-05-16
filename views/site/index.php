@@ -15,13 +15,13 @@ $this->title = 'Q International School';
         <h1>Welcome to Q International School!</h1>
         <p class="lead">You have made a smart decision to choose Q International School!</p>
         <div class="row">
-            <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/contact">Ask Me Anything</a></p>
-            <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/about">Explore QSchool</a></p>
+            <p class="col-md-4"><a class="btn btn-block btn-success" href="http://www.qschool.edu/contact-student-services-representative/">Ask Me Anything</a></p>
+            <p class="col-md-4"><a class="btn btn-block btn-success" href="http://www.qschool.edu/about-us/">Explore QSchool</a></p>
             <p class="col-md-4"><a class="btn btn-block btn-success" href="/site/apply">Apply Now</a></p>
         </div>
         
     </div>
-
+    <!--
     <div class="body-content">
 
         <div class="row">
@@ -58,4 +58,5 @@ $this->title = 'Q International School';
         </div>
 
     </div>
+    -->
 </div>

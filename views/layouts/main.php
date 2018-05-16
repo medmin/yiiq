@@ -31,7 +31,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => 'http://qschool.edu',
         'options' => [
             'class' => 'navbar-pills navbar-fixed-top',
         ],
@@ -39,9 +39,12 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            [
+                'label' => 'Home', 
+                'url' => 'http://qschool.edu'
+            ],
+            ['label' => 'About', 'url' => 'http://www.qschool.edu/about-us/'],
+            ['label' => 'Contact', 'url' => 'http://www.qschool.edu/contact-student-services-representative/'],
             ['label' => 'Apply', 'url' => ['/site/apply']],
             [
                 'label' => 'User',
@@ -82,7 +85,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <a href="/about">QSchool.edu</a> All Rights Reverved <?= date('Y') ?></p>
+        <p class="pull-left">&copy; <a href="http://qschool.edu">QSchool.edu</a> All Rights Reverved <?= date('Y') ?></p>
 
         <p class="pull-right"><?= \Yii::t('yii', 'Powered by {medmin}', [
                 'medmin' => '<a href="http://www.github.com/medmin" rel="external">' . \Yii::t('yii',

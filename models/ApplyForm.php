@@ -57,13 +57,12 @@ class ApplyForm extends Model
             'message',
             'legal',
             'ApplicationFee',
-            'StudentVisa',
-            'housingApplicationFee',
+            'StudentVisa'
         ];
         return [
             [$requriedItems, 'required'],
             ['HoursForPL', 'required', 'message' =>'Please input how many hours for the private lessons you purchase. You can type 0 if you don\'t need it.'],
-            ['PromoCode', 'required', 'message' => 'Type "No" if you don\'t have one.'],
+            // ['PromoCode', 'required', 'message' => 'Type "No" if you don\'t have one.'],
             [['email'], 'trim'],
             ['email', 'email'],
             ['email2', 'compare', 'compareAttribute' => 'email', 'message' => 'Attention! The emails are not the same.'],
