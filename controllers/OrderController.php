@@ -5,29 +5,44 @@ namespace app\controllers;
 use Yii;
 use app\models\Order;
 use app\models\OrderSearch;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\ForbiddenHttpException;
 /**
  * OrderController implements the CRUD actions for Order model.
  */
 class OrderController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function beforeAction($action)
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        
+        if (Yii::$app->user->identity->role <= 2 && Yii::$app->user->identity->eiv == 1) 
+        {
+            return true;
+        }
+        
+        throw new ForbiddenHttpException('No Permission.');
     }
+    // /**
+    //  * @inheritdoc
+    //  */
+    // public function behaviors()
+    // {
+    //     return [
+    //         'verbs' => [
+    //             'class' => VerbFilter::className(),
+    //             'actions' => [
+    //                 'delete' => ['POST'],
+    //             ],
+    //         ],
+            
+    //     ];
+    // }
 
     /**
      * Lists all Order models.
@@ -64,15 +79,16 @@ class OrderController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Order();
+        // $model = new Order();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        // return $this->render('create', [
+        //     'model' => $model,
+        // ]);
+        return $this->redirect('/site/apply');
     }
 
     /**

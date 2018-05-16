@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Message */
 
-$this->title = $model->name;
+$this->title = str_replace("-"," ",$model->name);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Messages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,11 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'type',
+            [
+                'label' => 'type',
+                'value' => function($model){
+                    $type = $model->type;
+                    $map = [ 1 => 'Apply', 2 =>'Contact', 3 =>'Payment'];
+                    return $map[$type];
+                }
+            ],
             'email:email',
-            'name',
-            'msgbody:ntext',
-            'createdAt',
+            [
+                'label' => 'name',
+                'value' => str_replace("-"," ",$model->name)
+            ],
+            'msgbody:html',
+            [
+                'attribute' => 'createdAt',
+                'value' => function ($model) {
+                    return Yii::$app->formatter->asDate($model->createdAt, 'yyyy-MM-dd');
+                },
+            ]
         ],
     ]) ?>
 

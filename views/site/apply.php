@@ -200,11 +200,11 @@ $('td').on('change keyup focusout', function(){
                     </div>
                     <table class="table table-bordered text-center">
                         <tr>
-                            <th class="text-center">Item</th>
+                            <th class="text-center" width="35%">Item</th>
                             <th class="text-center">Detail</th>
                         </tr>
                         <tr>
-                            <td>Choose A Program Please</td>
+                            <td width="35%">Choose A Program Please</td>
                             <td><?=$form->field($model, 'WhichProgram')->label(false)->dropDownList(
                                 [
                                     'AE' => 'Academic English',
@@ -220,23 +220,23 @@ $('td').on('change keyup focusout', function(){
                                 ]) ?></td>
                         </tr>
                         <tr>
-                            <td>How many weeks?</td>
+                            <td width="35%">How many weeks?</td>
                             <td><?= $form->field($model, 'Weeks')->label(false)->input('Number') ?></td>
                         </tr>
                         <tr>
-                            <td>Program Price</td>
+                            <td width="35%">Program Price</td>
                             <td id="programprice">0</td>
                         </tr>
                         <tr>
-                            <td>Private Lessons Hours<br />(Type 0 if you don't need it.)</td>
+                            <td width="35%">Private Lessons Hours<br />(Type 0 if you don't need it.)</td>
                             <td><?= $form->field($model, 'HoursForPL')->label(false)->input('Number') ?></td>
                         </tr>
                         <tr>
-                            <td>Private Lessons</td>
+                            <td width="35%">Private Lessons</td>
                             <td id="PLprice">0</td>
                         </tr>
                         <tr>
-                            <td>Application Fee</td>
+                            <td width="35%">Application Fee</td>
                             <td><?= $form->field($model, 'ApplicationFee')->label(false)->textInput([
                                     'value' => 125,
                                     'readOnly' => true
@@ -244,7 +244,7 @@ $('td').on('change keyup focusout', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Materials Fee</td>
+                            <td width="35%">Materials Fee</td>
                             <td><?= $form->field($model, 'MaterialsFee')->label(false)->textInput([
                                     'value' => 0,
                                     'readOnly' => true
@@ -252,14 +252,14 @@ $('td').on('change keyup focusout', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Promo Code<br />(Type 'No' if you don't have one.)</td>
+                            <td width="35%">Promo Code<br />(Type 'No' if you don't have one.)</td>
                             <td><?= $form->field($model, 'PromoCode')->label(false)->textInput([
                                     'placeholder' => 'e.g  ZF3HW4T'
                                 ])?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Student Visa</td>
+                            <td width="35%">Student Visa</td>
                             <td><?= $form->field($model, 'StudentVisa')
                                 ->label(false)
                                 ->dropDownList(
@@ -274,7 +274,7 @@ $('td').on('change keyup focusout', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Final Price ( US Dollars )</td>
+                            <td width="35%">Final Price ( US Dollars )</td>
                             <td>
                                 <?= $form->field($model, 'finalPrice')->label(false)->textInput([
                                     'value' => 0,

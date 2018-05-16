@@ -30,7 +30,7 @@ class PayController extends Controller
                 $order = Order::findOne(['orderid' => $orderid]);
                 $order->status = 1;
                 $order->paidAt = substr(microtime(), 0, 5) * 1000 + substr(microtime(), 11, 10) * 1000;
-                return $order->save() ? $this->redirect('/') : $this->redirect('/pay/error');
+                return $order->save() ? $this->redirect('http://www.qschool.edu') : $this->redirect('/pay/error');
             }
             catch (ErrorException $e)
             {

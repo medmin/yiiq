@@ -20,7 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterModel' => $orderSearchModel,
                 'columns' => [
                     [
-                        'attribute' => 'orderid'
+                        'attribute' => 'orderid',
+                        'value' => function($model){
+                            $orderid = $model->orderid;
+                            return Html::a($orderid, ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                        },
+                        'format' => 'raw'
                     ],
                     [
                         'attribute' => 'name',
@@ -30,15 +35,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $name;
                         }
                     ],
-                    [
-                        'attribute' => 'email'
-                    ],
+                    'email:email',
                     [
                         'attribute' => 'price'
                     ],
                     [
                         'attribute' => 'detail',
-                        'format' => 'raw'
+                        'format' => 'raw',
+                        'value' => function($model){
+                            $detail = $model->detail;
+                            if (strlen($detail) > 50){
+                                $readmore = substr($detail, 0, 50);
+                                return $readmore . Html::a('...read more...', ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                            }
+                            else{
+                                return $detail;
+                            }
+                        }
                     ],
                     [
                         'attribute' => 'createdAt',
@@ -77,7 +90,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filterModel' => $messageSearchModel,
                     'columns' => [
                         [
-                            'attribute' => 'id'
+                            'attribute' => 'id',
+                            'value' => function($model){
+                                $id = $model->id;
+                                return Html::a($id, ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                            },
+                            'format' => 'raw'
                         ],
                         [
                             'attribute' => 'type',
@@ -90,20 +108,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'name',
                             'value' => function($model){
-                                $nameArr = explode("-", $model->name);
-                                $name = $nameArr[0] .' '.$nameArr[1];
-                                return $name;
+                                return str_replace("-", " ", $model->name);
                             }
                         ],
-                        [
-                            'attribute' => 'email'
-                        ],
+                        'email:email',
                         [
                             'attribute' => 'msgbody',
-                            'value' => function ($model) {
-                                return Html::a($model->msgbody);
-                            },
-                            'format' => 'raw'
+                            'format' => 'raw',
+                            'value' => function($model){
+                                $msgbody = $model->msgbody;
+                                if (strlen($msgbody) > 20){
+                                    $readmore = substr($msgbody, 0, 20);
+                                    return $readmore . Html::a('...read more...', ['message/view','id'=>$model->id], ['title' => 'Message Detail']);
+                                }
+                                else{
+                                    return $msgbody;
+                                }
+                            }
                         ],
                         [
                             'attribute' => 'createdAt',

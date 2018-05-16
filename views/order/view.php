@@ -6,14 +6,14 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
 
-$this->title = $model->name;
+$this->title = $model->orderid;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <h1><?= 'Order ID: '.Html::encode($this->title) ?></h1>
+    <!--
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
@@ -24,20 +24,36 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    -->
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             'orderid',
-            'name',
+            [
+                'label' => 'name',
+                'value' => str_replace("-"," ",$model->name)
+            ],
             'email:email',
-            'detail:ntext',
+            'detail:html',
             'service',
-            'price',
-            'createdAt',
-            'status',
-            'paidAt',
+            [
+                'label' => 'price',
+                'value' => $model->price . ' US Dollars, including 3% process fee'
+            ],
+            
+            [
+                'attribute' => 'createdAt',
+                'value' => Yii::$app->formatter->asDate(round(($model->createdAt) / 1000), 'yyyy-MM-dd')
+            ],
+            [
+                'label' => 'status',
+                'value' => $model->status == 1 ? 'Paid' : 'Not Paid'
+            ],
+            [
+                'label' => 'paidAt',
+                'value' =>  $model->paidAt ==0 ? 0 : Yii::$app->formatter->asDate(round(($model->paidAt) / 1000), 'yyyy-MM-dd')
+            ],
         ],
     ]) ?>
 
