@@ -24,11 +24,14 @@ class ApplyForm extends Model
     public $email;
     public $email2;
     public $message;
+    public $service;
     public $WhichProgram;// ae, be, fe, test prep
     public $Weeks; 
+    public $programStartDate;
     public $HoursForPL; // Private Lesson
     public $ApplicationFee;
     public $MaterialsFee;
+    public $StudentInsurance;
     public $PromoCode;
     public $StudentVisa;
     public $finalPrice;
@@ -52,8 +55,11 @@ class ApplyForm extends Model
             'HowDidYouHearAboutUs',
             'email', 
             'email2',
+            'service',
             'WhichProgram', 
             'Weeks',
+            'programStartDate',
+            'StudentInsurance',
             'message',
             'legal',
             'ApplicationFee',
@@ -82,8 +88,10 @@ class ApplyForm extends Model
             'dob' => 'Date of Birth (You can type it)',
             'HowDidYouHearAboutUs'=> 'How did you hear about us?',
             'email2' => "Confirm your Email please",
-            'legal' => 'I have read and agree with the Term of Use (Click the link below the button)',
+            'service'=>'Accommodation',
+            'legal' => 'I have read and agree with the above agreement.',
             'ApplicationFee' => 'Application Fee (US dollars)',
+            'MaterialsFee' => 'Textbook Fee',
             'StudentVisa' => 'Do you need a Student Visa?',
             'verifyCode' => 'Verification Code',
         ];
@@ -118,38 +126,49 @@ class ApplyForm extends Model
 
         $orderid = "Q". date("Ymd") . crypt($this->email, Yii::$app->params['PayHashSalt']) . substr(microtime(), 0, 5) * 1000 ;
         
+        $StudentInsuranceFee = $this->StudentVisa == 'YES' ? 25 * $this->Weeks : 0;
+
         $finalPrice = $rate * (int)$programPricingUnit[$this->WhichProgram][$WeeksCategory($this->Weeks)] * $this->Weeks 
                     + (int)$this->HoursForPL * 50 
                     + (int)$this->ApplicationFee 
-                    + (int)$programPricingUnit[$this->WhichProgram]['MF'];
+                    + (int)$programPricingUnit[$this->WhichProgram]['MF']
+                    + (int)$StudentInsuranceFee;
+        
+        $AccommodationInfo = $this->service[0]['INeedARoom'] == 'No' ? 'Not Required' : 
+                        $this->service[0]['INeedARoom'] .
+                        ' Check In Date: '.$this->service[0]['CheckInDate'] .
+                        ' Check Out Date: '.$this->service[0]['CheckOutDate'];
 
         $detail =   'First Name: ' . $this->firstName . '<br />' .
                     'Last Name: ' . $this->lastName . '<br />' .
                     'Date of Birth: ' . $this->dob . '<br />' .
                     'Gender: ' . $this->gender . '<br />' .
                     'Phone: ' . $this->phone . '<br />' .
-                    'Home Address: ' . $this->homeAddress . '<br />' .
+                    'Home Address: ' . implode(" ",$this->homeAddress[0]) . '<br />' .
                     'Citizenship: ' . $this->citizenship . '<br />' .
                     'How Did You Hear About Us: ' . $this->HowDidYouHearAboutUs . '<br />' .
                     'Agency Name: ' . ($this->AgencyName == '' ? 'None' : $this->AgencyName) . '<br />' .
                     'Email: ' . $this->email . '<br />' .
-                    'Message: ' . $this->message . '<br />' .
+                    'Message: >>>' . $this->message . '<<< <br />' .
+                    'Accommodation: '. $AccommodationInfo . '<br />' .
                     'Which Program: ' . $this->WhichProgram . '<br />' .
                     'Weeks: ' . $this->Weeks . '<br />' .
+                    'Program Start Date: ' . $this->programStartDate . '<br />' .
                     'Hours For Private Lessons: ' . $this->HoursForPL . '<br />' .
                     'Application Fee: ' . $this->ApplicationFee . '<br />' .
-                    'Materials Fee: ' . $programPricingUnit[$this->WhichProgram]['MF'] . '<br />' .
+                    'Textbook Fee: ' . $programPricingUnit[$this->WhichProgram]['MF'] . '<br />' .
                     'Promo Code: ' . $this->PromoCode . '<br />' .
                     'Student Visa: ' . $this->StudentVisa . '<br />' .
+                    'Student Insurance Fee: ' . $StudentInsuranceFee . '<br />' .
                     'FinalPrice: ' . $finalPrice . ' US dollars';
-        
-        
+               
 
         $order = new Order();
         $order->orderid = $orderid;
         $order->name = $this->firstName.'-'. $this->lastName ;
         $order->email = $this->email;
         $order->detail = $detail;
+        $order->service = $AccommodationInfo;
         $order->price = (int)$finalPrice; 
         $order->createdAt = substr(microtime(), 0, 5) * 1000 + substr(microtime(), 11, 10) * 1000;
         if ($order->save() )

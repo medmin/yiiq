@@ -12,17 +12,22 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">
 
-    <h1><?= 'Order ID: '.Html::encode($this->title) ?></h1>
+    <h1>
+        <?= 'Order ID: '.Html::encode($this->title) ?>
+    </h1>
+    <p>
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+    </p>
     <!--
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
     </p>
     -->
     <?= DetailView::widget([
@@ -38,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'detail:html',
             'service',
             [
-                'label' => 'price',
-                'value' => $model->price . ' US Dollars, including 3% process fee'
+                'label' => 'Final Price',
+                'value' => $model->price . ' US Dollars, NOT YET including 3% process fee'
             ],
             
             [
@@ -51,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->status == 1 ? 'Paid' : 'Not Paid'
             ],
             [
-                'label' => 'paidAt',
+                'label' => 'Paid At',
                 'value' =>  $model->paidAt ==0 ? 0 : Yii::$app->formatter->asDate(round(($model->paidAt) / 1000), 'yyyy-MM-dd')
             ],
         ],

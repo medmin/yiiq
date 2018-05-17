@@ -8,7 +8,8 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use kartik\date\DatePicker;
-use kartik\typeahead\Typeahead;
+// use kartik\typeahead\Typeahead;
+use unclead\multipleinput\MultipleInput;
 
 
 $this->title = 'Apply Now';
@@ -65,6 +66,7 @@ $('td').on('change keyup focusout', function(){
     var whichprogram = $('#applyform-whichprogram').val();
     var weeks = $('#applyform-weeks').val();
     var hrs = $('#applyform-hoursforpl').val();
+    var StudentVisa = $('#applyform-studentvisa').val();
     var promocode = $('#applyform-promocode').val().toUpperCase();
     var NumInPromoCode = promocode.replace(/^[a-z]+/gi,'');
     var off = NumInPromoCode === '' ? 0 : NumInPromoCode;
@@ -78,8 +80,11 @@ $('td').on('change keyup focusout', function(){
 
     var MaterialFee = priceUnit[whichprogram]['MF'];
     $('#applyform-materialsfee').attr('value', MaterialFee);
+
+    var StudentInsuranceFee = StudentVisa === 'YES' ? 25 * weeks : 0;
+    $('#applyform-studentinsurance').attr('value', StudentInsuranceFee);
     
-    var finalprice = parseFloat(ProgramPrice) + parseInt(PLprice) + 125 + parseInt(MaterialFee);
+    var finalprice = parseFloat(ProgramPrice) + parseInt(PLprice) + 125 + parseInt(MaterialFee) + parseInt(StudentInsuranceFee);
     $('#applyform-finalprice').attr('value', finalprice);
     
 });
@@ -102,6 +107,8 @@ $('td').on('change keyup focusout', function(){
 
                 <?php $form = ActiveForm::begin(['id' => 'apply-form']); ?>
 
+                    <h2 class='bg-info'>Part 1. Student Information</h2>
+
                     <div class="row">
                         <div class="col-md-3">
                             <?= $form->field($model, 'firstName')->textInput(['autofocus' => true]) ?>
@@ -114,7 +121,7 @@ $('td').on('change keyup focusout', function(){
                         <div class="col-md-3">
                             <?= $form->field($model, 'dob')
                                 ->widget(DatePicker::classname(), [
-                                    'options' => ['placeholder' => 'Example: 1995-05-11'],
+                                    'options' => ['placeholder' => 'Example: 1995-03-29'],
                                     'pluginOptions' => [
                                         'format' => 'yyyy-mm-dd'
                                         ]
@@ -149,28 +156,21 @@ $('td').on('change keyup focusout', function(){
                         </div>
                         <div class="col-md-3">
                             <?= $form->field($model, 'citizenship')
-                                    ->widget(Typeahead::classname(), 
-                                    [
-                                        'dataset' => [
+                                        ->label('Country listed on your passport')
+                                        ->dropDownList(
+                                            Yii::$app->params['countries'],
                                             [
-                                                'local' => Yii::$app->params['countries'],
-                                                'limit' => 5
+                                                'prompt' => 'Country listed on your passport'
                                             ]
-                                        ],
-                                        'pluginOptions' => ['highlight' => true],
-                                        'options' => ['placeholder' => 'Please input your country'],
-                                    ])
-                                ?>
+                                        )
+                                
+                                ?> 
                         </div>
                     </div>
-
-                    <?= $form->field($model, 'homeAddress') ?>
-
                     <div class="row">
-                    <div class="col-md-6">    
-                        <?= $form->field($model, 'HowDidYouHearAboutUs')
-                                ->label(false)
-                                ->dropDownList(
+                        <div class="col-md-6">    
+                            <?= $form->field($model, 'HowDidYouHearAboutUs')
+                                    ->dropDownList(
                                     [
                                         'Google' => 'Google',
                                         'OtherSearchEngine' => 'Search Engine in my country',
@@ -198,6 +198,99 @@ $('td').on('change keyup focusout', function(){
                                 ) ?>  
                         </div>
                     </div>
+
+                    <?= $form->field($model, 'homeAddress')
+                        ->widget(MultipleInput::className(),[
+                            'max' => 1,
+                            // 'min' => 5,
+                            'columns' => [
+                                [
+                                    'name'  => 'Address1',
+                                    'title' => 'Address 1',
+                                ],
+                                [
+                                    'name'  => 'Address2',
+                                    'title' => 'Address 2',
+                                    'defaultValue' => '-',
+                                ],
+                                [
+                                    'name'  => 'City',
+                                    'title' => 'City'
+                                ],
+                                [
+                                    'name'  => 'PostalCode',
+                                    'title' => 'Postal Code',
+                                    'options' => [
+                                        'type' => 'number',
+                                        'class' => 'input-priority',
+                                    ]
+                                ],
+                                [
+                                    'name'  => 'Country',
+                                    'title'  => 'Country',
+                                    'type'  => 'dropDownList',
+                                    'items' => Yii::$app->params['countries'],
+                                    'options' => [
+                                        'prompt'=> 'Choose A Country, please.'
+                                    ]
+                                ]
+                            ]
+                        ]);
+                    ?>
+
+                    
+                    <?= $form->field($model, 'message')->textarea(['rows' => 3]) ?>
+                    <hr />
+                    <h2 class='bg-info'>Part 2. Accommodation</h2>
+                    <?= $form->field($model, 'service')
+                             ->widget(MultipleInput::className(),[
+                                'max' => 1,
+                                'columns' => [
+                                    [
+                                        'name'  => 'INeedARoom',
+                                        'type'  => 'dropDownList',
+                                        'title' => 'Do you need Accommodation?',
+                                        'items' => [
+                                            'No' => 'Not required',
+                                            'Homestay' => 'Yes, I need homestay.',
+                                            'StudentSharedRoom'=> 'Yes, I need Student Residence. A Shared Room, please.',
+                                            'StudentSingleRoom'=> 'Yes, I need Student Residence. A Single Room, please.'
+                                        ],
+                                        'options' => [
+                                            'prompt'=> 'Do you need Accommodation?'
+                                        ]
+                                    ],
+                                    [
+                                        'name' => 'CheckInDate',
+                                        'type' => DatePicker::className(),
+                                        'title' => 'Check In Date (You can type it)',
+                                        'defaultValue' => date('Y-m-d'),
+                                        'options' => [
+                                            'options' => ['placeholder' => 'Example: 1995-03-29'],
+                                            'pluginOptions' => [
+                                                'format' => 'yyyy-mm-dd',
+                                                'todayHighlight' => true
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        'name' => 'CheckOutDate',
+                                        'type' => DatePicker::className(),
+                                        'title' => 'Check Out Date (You can type it)',
+                                        'defaultValue' => date('Y-m-d'),
+                                        'options' => [
+                                            'options' => ['placeholder' => 'Example: 1995-03-29'],
+                                            'pluginOptions' => [
+                                                'format' => 'yyyy-mm-dd',
+                                                'todayHighlight' => true
+                                            ]
+                                        ]
+                                    ],
+                                ]
+                             ]);
+                     ?>
+                    <hr />
+                    <h2 class='bg-info'>Part 3. Programs</h2>
                     <table class="table table-bordered text-center">
                         <tr>
                             <th class="text-center" width="35%">Item</th>
@@ -224,6 +317,19 @@ $('td').on('change keyup focusout', function(){
                             <td><?= $form->field($model, 'Weeks')->label(false)->input('Number') ?></td>
                         </tr>
                         <tr>
+                            <td width="35%">Program Start Date<br /><a href="http://www.qschool.edu/wp-content/uploads/2018/05/2018-Academic-Calendar.pdf">Click To Download the Academic Calendar</a></td>
+                            <td>
+                                <?= $form->field($model, 'programStartDate')->label(false)
+                                        ->widget(DatePicker::classname(), [
+                                            'options' => ['placeholder' => 'Example: 1995-03-29'],
+                                            'pluginOptions' => [
+                                                'format' => 'yyyy-mm-dd'
+                                                ]
+                                            ]);
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td width="35%">Program Price</td>
                             <td id="programprice">0</td>
                         </tr>
@@ -244,15 +350,16 @@ $('td').on('change keyup focusout', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td width="35%">Materials Fee</td>
+                            <td width="35%">Textbook Fee</td>
                             <td><?= $form->field($model, 'MaterialsFee')->label(false)->textInput([
                                     'value' => 0,
                                     'readOnly' => true
-                                ])?>
+                                ]) ?>
                             </td>
                         </tr>
+                        
                         <tr>
-                            <td width="35%">Promo Code<br />(Type 'No' if you don't have one.)</td>
+                            <td width="35%">Promo Code<br />(Leave it blank if you don't have one.)</td>
                             <td><?= $form->field($model, 'PromoCode')->label(false)->textInput([
                                     'placeholder' => 'e.g  ZF3HW4T'
                                 ])?>
@@ -274,7 +381,18 @@ $('td').on('change keyup focusout', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td width="35%">Final Price ( US Dollars )</td>
+                            <td  width="35%">Student Insurance<br />($25 per week)</td>
+                            <td>
+                                <?= $form->field($model, 'StudentInsurance')->label(false)
+                                        ->textInput([
+                                            'value' => 0,
+                                            'readOnly' => true
+                                        ])
+                                ?>
+                             </td>
+                        </tr>
+                        <tr>
+                            <td width="35%">Estimated Program Costs ( US Dollars )</td>
                             <td>
                                 <?= $form->field($model, 'finalPrice')->label(false)->textInput([
                                     'value' => 0,
@@ -284,20 +402,33 @@ $('td').on('change keyup focusout', function(){
                         </tr>  
                     </table>
                     
-                    <?= $form->field($model, 'message')->textarea(['rows' => 3]) ?>
+                    
 
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
-                    
-                    <?= $form->field($model, 'legal')->checkbox() ?> 
+                    <p>
 
+                        <p>
+                        This agreement is a legally binding document when signed by the student and accepted by the school.
+                        </p>
+                        <p>
+                        I have received a copy of the “<a href="http://www.qschool.edu/wp-content/uploads/2018/02/Terms-and-Conditions.pdf">Terms & Conditions</a>” including the refund and cancellation policy.
+                        I understand the <a href="http://www.qschool.edu/wp-content/uploads/2018/02/2018-Program-Summary.pdf">course fees, schedules and starting dates</a> and I agree to the terms and conditions.
+                        I hereby affirm that I have sufficient funds to pay for all course costs, as well as the cost of food, housing and all other personal expenses during the full period of my course at Q International School.
+                        In case of illness or injury, I grant permission to be examined or treated as necessary.
+                        I hereby certify that all the information on this application form is true and complete.
+                        I certify that I have read, understand, and agree to the terms and conditions.
+                        </p>
+                       
+                        <?= $form->field($model, 'legal')->checkbox() ?> 
+                    </p> 
                     <div class="form-group">
                         <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button', 'id'=> 'signupSubmitBtn', 'disabled' => true]) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>
-                <a href="/site/legal" target=_blank>Click here to check our legal terms.</a>
+                
             </div>
         </div>
 

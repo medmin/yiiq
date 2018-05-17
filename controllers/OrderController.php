@@ -28,22 +28,7 @@ class OrderController extends Controller
         
         throw new ForbiddenHttpException('No Permission.');
     }
-    // /**
-    //  * @inheritdoc
-    //  */
-    // public function behaviors()
-    // {
-    //     return [
-    //         'verbs' => [
-    //             'class' => VerbFilter::className(),
-    //             'actions' => [
-    //                 'delete' => ['POST'],
-    //             ],
-    //         ],
-            
-    //     ];
-    // }
-
+    
     /**
      * Lists all Order models.
      * @return mixed

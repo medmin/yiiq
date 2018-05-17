@@ -170,12 +170,17 @@ class SiteController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->apply()) 
         {
-            return $this->redirect('/site/pay');
+            return $this->redirect('/site/applythankyou');
         }
 
         return $this->render('apply', [
             'model' => $model
         ]);
+    }
+
+    public function actionApplythankyou()
+    {
+        return $this->render('applythankyou');
     }
 
     /**
@@ -202,7 +207,6 @@ class SiteController extends Controller
         return $this->render('legal');
     }
 
-    
 
 
 }
