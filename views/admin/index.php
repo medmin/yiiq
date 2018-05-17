@@ -2,6 +2,8 @@
 
 /**
  * @var $this yii\web\View 
+ * @var $model2 app\models\Order
+ * @var $model app\models\Message
  * */
 
 use yii\helpers\Html;
@@ -21,18 +23,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     [
                         'attribute' => 'orderid',
-                        'value' => function($model){
-                            $orderid = $model->orderid;
-                            return Html::a($orderid, ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                        'value' => function($model2){
+                            $orderid = $model2->orderid;
+                            return Html::a($orderid, ['order/view','id'=>$model2->id], ['title' => 'Order Detail']);
                         },
                         'format' => 'raw'
                     ],
                     [
                         'attribute' => 'name',
-                        'value' => function($model){
-                            $nameArr = explode("-", $model->name);
-                            $name = $nameArr[0] .' '.$nameArr[1];
-                            return $name;
+                        'value' => function($model2){
+                            return str_replace("-", " ", $model2->name);
                         }
                     ],
                     'email:email',
@@ -42,11 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'detail',
                         'format' => 'raw',
-                        'value' => function($model){
-                            $detail = $model->detail;
+                        'value' => function($model2){
+                            $detail = $model2->detail;
                             if (strlen($detail) > 50){
                                 $readmore = substr($detail, 0, 50);
-                                return $readmore . Html::a('...read more...', ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                                return $readmore . Html::a('...read more...', ['order/view','id'=>$model2->id], ['title' => 'Order Detail']);
                             }
                             else{
                                 return $detail;
@@ -55,24 +55,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => 'createdAt',
-                        'value' => function($model){
-                            $createdAt = $model->createdAt;
+                        'value' => function($model2){
+                            $createdAt = $model2->createdAt;
                             $dateForAdmin = date("d F Y H:i:s", round($createdAt/1000));
                             return $dateForAdmin;
                         }
                     ],
                     [
                         'attribute' => 'status',
-                        'value' => function($model){
-                            $status = $model->status;
+                        'value' => function($model2){
+                            $status = $model2->status;
                             $map = [ 0 => 'Not Paid', 1 =>'Paid'];
                             return $map[$status];
                         }
                     ],
                     [
                         'attribute' => 'paidAt',
-                        'value' => function($model){
-                            $paidAt = $model->paidAt;
+                        'value' => function($model2){
+                            $paidAt = $model2->paidAt;
                             $dateForAdmin = date("d F Y H:i:s", round($paidAt/1000));
                             return $paidAt == 0 ? 0 : $dateForAdmin;
                         }
@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'id',
                             'value' => function($model){
                                 $id = $model->id;
-                                return Html::a($id, ['order/view','id'=>$model->id], ['title' => 'Order Detail']);
+                                return Html::a($id, ['message/view','id'=>$model->id], ['title' => 'Message Detail']);
                             },
                             'format' => 'raw'
                         ],

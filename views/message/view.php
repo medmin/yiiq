@@ -6,14 +6,14 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Message */
 
-$this->title = str_replace("-"," ",$model->name);
+$this->title = str_replace("-"," ","Msg From: ".$model->name);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Messages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="message-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <!--
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    -->
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -42,7 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'name',
                 'value' => str_replace("-"," ",$model->name)
             ],
-            'msgbody:html',
+            [
+                'attribute' => 'msgbody',
+                'label' => 'Message Detail',
+                'format' => 'raw',
+            ],
             [
                 'attribute' => 'createdAt',
                 'value' => function ($model) {
