@@ -17,7 +17,7 @@ use app\models\Order;
 
 class SiteController extends Controller
 {
-    public $layout = "main-site";
+   
     /**
      * {@inheritdoc}
      */
@@ -166,6 +166,7 @@ class SiteController extends Controller
      */
     public function actionApply()
     {
+        $this->layout = "main-apply";
 
         $model = new ApplyForm();
         
