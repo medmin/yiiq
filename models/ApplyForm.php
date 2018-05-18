@@ -87,7 +87,7 @@ class ApplyForm extends Model
         return [
             'dob' => 'Date of Birth (You can type it)',
             'HowDidYouHearAboutUs'=> 'How did you hear about us?',
-            'email2' => "Confirm your Email please",
+            'email2' => "Confirm your Email",
             'service'=>'Accommodation',
             'legal' => 'I have read and agree with the above agreement.',
             'ApplicationFee' => 'Application Fee (US dollars)',

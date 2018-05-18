@@ -85,12 +85,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <a href="http://qschool.edu">QSchool.edu</a> All Rights Reverved <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= \Yii::t('yii', 'Powered by {medmin}', [
-                'medmin' => '<a href="http://www.github.com/medmin" rel="external">' . \Yii::t('yii',
-                        'medmin') . '</a>',
-            ]); ?></p>
+        <p class="pull-left">&copy; <a href="http://qschool.edu">QSchool.edu</a> All Rights Reserved <?= date('Y') ?></p>     
     </div>
 </footer>
 

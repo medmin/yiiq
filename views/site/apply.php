@@ -231,7 +231,7 @@ $('td').on('change keyup focusout', function(){
                                     'type'  => 'dropDownList',
                                     'items' => Yii::$app->params['countries'],
                                     'options' => [
-                                        'prompt'=> 'Choose A Country, please.'
+                                        'prompt'=> 'Choose A Country.'
                                     ]
                                 ]
                             ]
@@ -243,13 +243,14 @@ $('td').on('change keyup focusout', function(){
                     <hr />
                     <h2 class='bg-info'>Part 2. Accommodation</h2>
                     <?= $form->field($model, 'service')
+                             ->label(false)
                              ->widget(MultipleInput::className(),[
                                 'max' => 1,
                                 'columns' => [
                                     [
                                         'name'  => 'INeedARoom',
                                         'type'  => 'dropDownList',
-                                        'title' => 'Do you need Accommodation?',
+                                        'title' => 'Accommodation',
                                         'items' => [
                                             'No' => 'Not required',
                                             'Homestay' => 'Yes, I need homestay.',
@@ -297,7 +298,7 @@ $('td').on('change keyup focusout', function(){
                             <th class="text-center">Detail</th>
                         </tr>
                         <tr>
-                            <td width="35%">Choose A Program Please</td>
+                            <td width="35%">Choose A Program</td>
                             <td><?=$form->field($model, 'WhichProgram')->label(false)->dropDownList(
                                 [
                                     'AE' => 'Academic English',
@@ -309,7 +310,7 @@ $('td').on('change keyup focusout', function(){
                                     'IELTS' => 'Test Prep - IELTS',
                                 ],
                                 [
-                                    'prompt' => 'Choose a program please'
+                                    'prompt' => 'Choose a program'
                                 ]) ?></td>
                         </tr>
                         <tr>
@@ -407,8 +408,11 @@ $('td').on('change keyup focusout', function(){
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
-                    <p>
 
+                    <p>
+                        <p class="bg-info">
+                            We will contact you once you <strong>SUBMIT</strong> your application via email.  Your application will be processed and confirmation will be provided.  Meanwhile, if you have any questions, please do not hesitate to contact us at <a href="mailto:admissions@qschool.edu">admissions@qschool.edu</a>. 
+                        </p>   
                         <p>
                         This agreement is a legally binding document when signed by the student and accepted by the school.
                         </p>
