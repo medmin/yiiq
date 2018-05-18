@@ -17,6 +17,7 @@ use app\models\Order;
 
 class SiteController extends Controller
 {
+    public $layout = "main-site";
     /**
      * {@inheritdoc}
      */
