@@ -180,7 +180,7 @@ class SiteController extends Controller
 
             Yii::$app->mailer->compose('notifyAdmin')
                     ->setFrom('technology@ieducationm.com')
-                    ->setTo('guiyumin@gmail.com')
+                    ->setTo('alvinc@qschool.edu')
                     ->setSubject('Hello, OrderId: ' . $id)
                     ->send();
 
