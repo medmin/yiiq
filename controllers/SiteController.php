@@ -13,6 +13,7 @@ use app\models\ApplyForm;
 use app\models\SignupForm;
 use app\models\PayForm;
 use app\models\Order;
+use app\queues\NotifyAdminJob;
 
 
 class SiteController extends Controller
@@ -172,6 +173,24 @@ class SiteController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->apply()) 
         {
+
+            $session = Yii::$app->session->get('orderInfo');
+
+            $id = $session['id'];
+
+            Yii::$app->mailer->compose('notifyAdmin')
+                    ->setFrom('technology@ieducationm.com')
+                    ->setTo('guiyumin@gmail.com')
+                    ->setSubject('Hello, OrderId: ' . $id)
+                    ->send();
+
+            // Yii::$app->queue->push(new NotifyAdminJob([
+            //     'mailViewName' => 'notifyAdmin',
+            //     'fromAddress' => 'technology@ieducationm.com',
+            //     'toAddress' => 'guiyumin@gmail.com',
+            //     'subject' => 'Hello, OrderId: ' . $id
+            // ]));
+
             return $this->redirect('/site/applythankyou');
         }
 

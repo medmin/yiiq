@@ -190,8 +190,7 @@ $('td').on('change keyup focusout', function(){
                         </div>
                         <div class="col-md-6" id="a-n-div" style='display:none;'>
                             <?= $form->field($model, 'AgencyName')
-                                ->label(false)
-                                ->textInput(
+                             ->textInput(
                                     [
                                         'placeholder' => 'Would you mind telling us the agency\'s name? Thanks'
                                     ]
@@ -264,7 +263,7 @@ $('td').on('change keyup focusout', function(){
                                     [
                                         'name' => 'CheckInDate',
                                         'type' => DatePicker::className(),
-                                        'title' => 'Check In Date (You can type it)',
+                                        'title' => 'Check In Date',
                                         'defaultValue' => date('Y-m-d'),
                                         'options' => [
                                             'options' => ['placeholder' => 'Example: 1995-03-29'],
@@ -373,7 +372,7 @@ $('td').on('change keyup focusout', function(){
                                 ->dropDownList(
                                     [
                                         'YES' => 'Yes',
-                                        'NO' => 'NO',
+                                        'NO' => 'No',
                                     ],
                                     [
                                         'prompt' => 'Do you need a student visa?'

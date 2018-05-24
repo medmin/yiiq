@@ -10,7 +10,7 @@ $config = [
     'name' => 'Q International School',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm'   => '@vendor/npm-asset'
     ],
     'components' => [
         'request' => [
@@ -32,7 +32,15 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $params['EmailConfig']['Host'],
+                'username' => $params['EmailConfig']['Username'],
+                'password' => $params['EmailConfig']['Password'],
+                'port' => $params['EmailConfig']['Port'],
+                'encryption' => $params['EmailConfig']['Encryption']
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -52,6 +60,7 @@ $config = [
                 
             ],
         ],
+        
         
     ],
     'params' => $params,

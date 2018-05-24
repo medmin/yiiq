@@ -7,8 +7,12 @@
 
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use app\queues\NotifyAdminJob;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -30,5 +34,15 @@ class HelloController extends Controller
         echo $message . "\n";
 
         return ExitCode::OK;
+    }
+
+    public function actionMailer()
+    {
+        
+        return Yii::$app->mailer->compose('notifyAdmin')
+            ->setFrom('technology@ieducationm.com')
+            ->setTo('erichui329@gmail.com')
+            ->setSubject('Hello')
+            ->send();
     }
 }

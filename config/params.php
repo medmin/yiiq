@@ -2,6 +2,14 @@
 
 return [
     'adminEmail' => 'technology@ieducationm.com',
+    'Alvin' => 'achou@ieducationm.com',
+    'EmailConfig' => [
+        'Host' => '',
+        'Username' => '',
+        'Password' => '',
+        'Port' => '',
+        'Encryption' => ''
+    ],
     "PayHashSalt" => "helloworld",
     'PromoCodeArr' => [
         'NO' => 0,

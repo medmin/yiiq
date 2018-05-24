@@ -1,7 +1,7 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$params = is_file(__DIR__ . '/params-local.php') ? require __DIR__ . '/params-local.php' : require __DIR__ . '/params.php';
+$db = is_file(__DIR__ . '/db-local.php') ? require __DIR__ . '/db-local.php' : require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic-console',
@@ -15,6 +15,21 @@ $config = [
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => $params['EmailConfig']['Host'],
+                'username' => $params['EmailConfig']['Username'],
+                'password' => $params['EmailConfig']['Password'],
+                'port' => $params['EmailConfig']['Port'],
+                'encryption' => $params['EmailConfig']['Encryption']
+            ]
         ],
         'log' => [
             'targets' => [
