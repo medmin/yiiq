@@ -85,7 +85,7 @@ class ApplyForm extends Model
     public function attributeLabels()
     {
         return [
-            'dob' => 'Date of Birth (You can type it)',
+            'dob' => 'Date of Birth',
             'HowDidYouHearAboutUs'=> 'How did you hear about us?',
             'email2' => "Confirm your Email",
             'service'=>'Accommodation',
