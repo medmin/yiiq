@@ -276,7 +276,7 @@ $('td').on('change keyup focusout', function(){
                                     [
                                         'name' => 'CheckOutDate',
                                         'type' => DatePicker::className(),
-                                        'title' => 'Check Out Date (You can type it)',
+                                        'title' => 'Check Out Date',
                                         'defaultValue' => date('Y-m-d'),
                                         'options' => [
                                             'options' => ['placeholder' => 'Example: 1995-03-29'],
